@@ -42,15 +42,11 @@
             transform: translateY(-4px);
             box-shadow: 0 4px 16px rgba(0,0,0,0.15);
         }
-        .demo-icon {
+        .demo-icon-img {
             width: 64px;
             height: 64px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
+            object-fit: cover;
             margin-bottom: 1rem;
         }
         .demo-name {
@@ -63,12 +59,12 @@
     <h1>Prototyper</h1>
     <div class="demo-grid">
         <a href="etpmcp/" class="demo-card">
-            <div class="demo-icon">🔌</div>
-            <span class="demo-name">EtpMCP</span>
+            <img src="etpmcp/EtpMCP_logo_500x500.png" alt="Enterprise MCP" class="demo-icon-img">
+            <span class="demo-name">Enterprise MCP</span>
         </a>
-        <a href="smartgent/" class="demo-card">
-            <div class="demo-icon">🤖</div>
-            <span class="demo-name">Smartgent</span>
+        <a href="etpai/" class="demo-card">
+            <img src="etpai/EtpAI_logo_500x500.png" alt="Enterprise AI Assistant" class="demo-icon-img">
+            <span class="demo-name">Enterprise AI Assistant</span>
         </a>
     </div>
 </body>
