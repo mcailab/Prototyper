@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recap - AI Meeting Notes</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="recap-logo.png">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .app-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 2rem;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: inherit;
+        }
+        .logo img {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+        }
+        .logo span {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0.5rem 1rem;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .back-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        .video-section {
+            background: rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        .video-title {
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .feature-card {
+            background: rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: transform 0.2s, background 0.2s;
+        }
+        .feature-card:hover {
+            transform: translateY(-4px);
+            background: rgba(255,255,255,0.12);
+        }
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin: 0 auto 1rem;
+        }
+        .feature-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+        .feature-card p {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.7);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="app-header">
+            <a href="index.html" class="logo">
+                <img src="recap-logo.png" alt="Recap Logo">
+                <span>Recap</span>
+            </a>
+            <a href="../" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+                <span>Back to Prototyper</span>
+            </a>
+        </header>
+
+        <div class="video-section">
+            <h1 class="video-title">Recap Demo - AI Meeting Notes</h1>
+            <div class="video-container">
+                <iframe
+                    src="https://www.youtube.com/embed/y2WnQO6XUPU"
+                    title="Recap Demo"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen>
+                </iframe>
+            </div>
+        </div>
+
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-microphone"></i>
+                </div>
+                <h3>Audio Transcription</h3>
+                <p>Automatic speech-to-text conversion</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <h3>AI Summarization</h3>
+                <p>Intelligent meeting summaries</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-tasks"></i>
+                </div>
+                <h3>Action Items</h3>
+                <p>Auto-extracted tasks and follow-ups</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
