@@ -39,8 +39,20 @@
         }
         .demo-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
             gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        @media (max-width: 900px) {
+            .demo-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 600px) {
+            .demo-grid {
+                grid-template-columns: 1fr;
+            }
         }
         .demo-card {
             background: white;
@@ -118,7 +130,7 @@
         </div>
     </div>
     <footer>
-        &copy; 2025 <a href="https://github.com/mcailab" target="_blank">MCAILab</a>. All rights reserved.
+        &copy; 2025 <a href="https://github.com/mcailab" target="_blank">MCAI Lab</a>. All rights reserved.
     </footer>
 </body>
 </html>
