@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smartgent - Enterprise AI Assistant by Jarvis & Sam</title>
+    <!-- Favicon - Jarvis & Sam Logo -->
+    <link rel="icon" type="image/png" href="../img/jns_logo.png">
+    <!-- Font Awesome for professional icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Header with Logo and Tabs -->
+        <header class="app-header">
+            <div class="logo-section">
+                <a href="index.html" class="logo" style="display: flex; align-items: center; gap: 8px; text-decoration: none; color: inherit;">
+                    <img src="../img/Smartgent_logo_500x500.png" alt="Smartgent Logo" style="height: 32px; width: 32px;">
+                    <span style="font-family: Arial, sans-serif; font-size: 18px; font-weight: bold; color: #1e293b;">
+                        Smartgent - Enterprise AI Assistant
+                    </span>
+                </a>
+            </div>
+            
+            <!-- Tab Navigation -->
+            <nav class="tab-navigation">
+                <button class="tab-btn active" data-tab="expense">
+                    <i class="fas fa-receipt"></i>
+                    <span>Expense Claim</span>
+                </button>
+                <button class="tab-btn" data-tab="leave">
+                    <i class="fas fa-plane-departure"></i>
+                    <span>Apply Leave</span>
+                </button>
+                <button class="tab-btn" data-tab="talent">
+                    <i class="fas fa-users"></i>
+                    <span>Talent Match</span>
+                </button>
+            </nav>
+
+            <!-- Control Panel (moved to header) -->
+            <div class="control-panel">
+                <button id="fullscreenBtn" class="control-btn">
+                    <i class="fas fa-expand"></i><span>Fullscreen</span>
+                </button>
+                <button id="playPauseBtn" class="control-btn active">
+                    <i class="fas fa-pause"></i><span>Pause</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Split Screen Layout -->
+        <div class="split-container">
+            <!-- Opening Slide Overlay -->
+            <div class="opening-overlay" id="openingOverlay">
+                <div class="opening-content">
+                    <div class="opening-header">
+                        <img src="../img/Smartgent_logo_500x500.png" alt="Smartgent Logo" class="opening-logo-img">
+                        <h1 class="opening-title">Smartgent</h1>
+                        <p class="opening-subtitle">Transform Your Enterprise with AI-Powered Automation</p>
+                        <p class="opening-tagline">Streamline. Automate. Succeed.</p>
+                    </div>
+                    
+                    <div class="opening-tabs">
+                        <div class="opening-tab expense-tab">
+                            <i class="fas fa-receipt"></i>
+                            <h3>Expense Claim</h3>
+                            <p>Automated receipt processing & instant reimbursement</p>
+                        </div>
+                        <div class="opening-tab leave-tab">
+                            <i class="fas fa-plane-departure"></i>
+                            <h3>Apply Leave</h3>
+                            <p>Smart travel document analysis & leave management</p>
+                        </div>
+                        <div class="opening-tab talent-tab">
+                            <i class="fas fa-users"></i>
+                            <h3>Talent Match</h3>
+                            <p>AI-driven recruitment & skill assessment</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Intro Slide Overlay -->
+            <div class="intro-overlay" id="introOverlay">
+                <div class="intro-content">
+                    <div class="intro-icon" id="introIcon"></div>
+                    <div class="intro-title" id="introTitle"></div>
+                </div>
+            </div>
+
+            <!-- Left Side: Smartgent Chatbot -->
+            <div class="chatbot-panel">
+                <div class="chat-container">
+                    <div class="chat-messages" id="chatMessages">
+                        <!-- Messages will be added dynamically -->
+                    </div>
+                    
+                    <div class="chat-input-area">
+                        <div class="upload-zone" id="uploadZone" style="display: none;">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Drag & drop files here or click to browse</p>
+                            <input type="file" id="fileInput" hidden>
+                        </div>
+                        <div class="chat-input-wrapper">
+                            <input type="text" id="chatInput" class="chat-input" placeholder="Type your message or drag & drop files here..." />
+                            <button id="chatSendBtn" class="chat-send-btn">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upload Previews (hidden by default) -->
+                <div class="upload-preview" id="receiptPreview" style="display: none;">
+                    <div class="preview-card">
+                        <div class="preview-header">
+                            <i class="file-type-icon fas fa-image" style="color: #10b981;"></i> Receipt (JPG)
+                        </div>
+                        <div class="preview-content">
+                            <div class="receipt-mock">
+                                <div class="receipt-title">THE BLUE ORCHID</div>
+                                <div class="receipt-divider">============================</div>
+                                <div class="receipt-item">Caesar Salad <span>$18.50</span></div>
+                                <div class="receipt-item">Grilled Salmon <span>$42.00</span></div>
+                                <div class="receipt-item">Ribeye Steak <span>$65.00</span></div>
+                                <div class="receipt-item">Cabernet Wine <span>$45.00</span></div>
+                                <div class="receipt-item">Tiramisu <span>$12.00</span></div>
+                                <div class="receipt-divider">============================</div>
+                                <div class="receipt-subtotal">Subtotal: <span>$182.50</span></div>
+                                <div class="receipt-tax">Tax (8%): <span>$14.60</span></div>
+                                <div class="receipt-total">TOTAL: <span>$197.10</span></div>
+                                <div class="receipt-date">Date: Jan 15, 2025</div>
+                                <div class="receipt-time">Time: 12:45 PM</div>
+                                <div class="receipt-payment">Paid: Corporate Card ****4589</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="upload-preview" id="ticketPreview" style="display: none;">
+                    <div class="preview-card">
+                        <div class="preview-header">
+                            <i class="file-type-icon fas fa-file-pdf" style="color: #dc2626;"></i> Boarding Pass (PDF)
+                        </div>
+                        <div class="preview-content">
+                            <div class="ticket-mock">
+                                <div class="ticket-airline">
+                                    <i class="fas fa-plane"></i> SKYLINE AIRLINES
+                                </div>
+                                <div class="ticket-route">
+                                    <span class="airport">SFO</span>
+                                    <i class="fas fa-arrow-right"></i>
+                                    <span class="airport">NYC</span>
+                                </div>
+                                <div class="ticket-details">
+                                    <div class="ticket-info">
+                                        <span class="label">Flight</span>
+                                        <span class="value">SK 482</span>
+                                    </div>
+                                    <div class="ticket-info">
+                                        <span class="label">Gate</span>
+                                        <span class="value">B12</span>
+                                    </div>
+                                </div>
+                                <div class="ticket-dates">
+                                    <div class="ticket-date">
+                                        <span class="label">Departure</span>
+                                        <span class="value">Feb 20, 2025</span>
+                                    </div>
+                                    <div class="ticket-date">
+                                        <span class="label">Return</span>
+                                        <span class="value">Feb 24, 2025</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="upload-preview" id="resumePreview" style="display: none;">
+                    <div class="preview-card">
+                        <div class="preview-header">
+                            <i class="file-type-icon fas fa-file-word" style="color: #2563eb;"></i> Resume (DOCX)
+                        </div>
+                        <div class="preview-content">
+                            <div class="resume-mock">
+                                <div class="resume-name">John Doe</div>
+                                <div class="resume-title">Senior Full Stack Developer</div>
+                                <div class="resume-section">
+                                    <strong>Experience</strong>
+                                    <p>• Senior Developer - Tech Corp (5 years)</p>
+                                    <p>• Team Lead - StartUp Inc (2 years)</p>
+                                </div>
+                                <div class="resume-section">
+                                    <strong>Skills</strong>
+                                    <div class="resume-skills">
+                                        <span>Python</span>
+                                        <span>React</span>
+                                        <span>AWS</span>
+                                        <span>Docker</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side: System Interface -->
+            <div class="system-panel">
+                <!-- ExpenseIQ System -->
+                <div class="system-interface active" id="expense-system">
+                    <div class="system-header">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                        <h2>Expense Management System</h2>
+                    </div>
+                    
+                    <form class="system-form" id="expense-form">
+                        <div class="form-section">
+                            <h3>Expense Report</h3>
+                            
+                            <div class="form-group">
+                                <label><i class="fas fa-store"></i> Vendor Name</label>
+                                <input type="text" id="expense-vendor" placeholder="Awaiting input..." readonly>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label><i class="fas fa-dollar-sign"></i> Amount</label>
+                                    <input type="text" id="expense-amount" placeholder="Awaiting input..." readonly>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label><i class="fas fa-calendar"></i> Date</label>
+                                    <input type="text" id="expense-date" placeholder="Awaiting input..." readonly>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label><i class="fas fa-tag"></i> Category</label>
+                                <select id="expense-category" disabled>
+                                    <option>Select category...</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label><i class="fas fa-comment"></i> Description</label>
+                                <textarea id="expense-description" placeholder="Awaiting input..." readonly></textarea>
+                            </div>
+                            
+                            <div class="form-status" id="expense-status">
+                                <i class="fas fa-info-circle"></i>
+                                <span>Form will be populated after document upload</span>
+                            </div>
+                            
+                            <button type="submit" class="submit-btn" disabled>
+                                <i class="fas fa-paper-plane"></i> Submit Expense Report
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <!-- Success Screen -->
+                    <div class="success-screen" id="expense-success">
+                        <div class="success-icon">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <h2 class="success-title">Submission Successful!</h2>
+                        <p class="success-message">Your expense report has been submitted</p>
+                        <div class="submission-id">Reference #EXP-2025-0115</div>
+                    </div>
+                </div>
+
+                <!-- LeaveSync System -->
+                <div class="system-interface" id="leave-system">
+                    <div class="system-header">
+                        <i class="fas fa-calendar-check"></i>
+                        <h2>Leave Management System</h2>
+                    </div>
+                    
+                    <form class="system-form" id="leave-form">
+                        <div class="form-section">
+                            <h3>Leave Application</h3>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label><i class="fas fa-user"></i> Employee Name</label>
+                                    <input type="text" value="John Doe" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label><i class="fas fa-briefcase"></i> Leave Type</label>
+                                    <select id="leave-type" disabled>
+                                        <option>Select type...</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label><i class="fas fa-calendar-alt"></i> From Date</label>
+                                    <input type="text" id="leave-from" placeholder="Awaiting input..." readonly>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label><i class="fas fa-calendar-alt"></i> To Date</label>
+                                    <input type="text" id="leave-to" placeholder="Awaiting input..." readonly>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label><i class="fas fa-plane"></i> Destination</label>
+                                    <input type="text" id="leave-destination" placeholder="Awaiting input..." readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label><i class="fas fa-comment-alt"></i> Reason</label>
+                                    <input type="text" id="leave-reason" placeholder="Awaiting input..." readonly>
+                                </div>
+                            </div>
+                            
+                            <div class="calendar-widget" id="leave-calendar">
+                                <div class="calendar-header">
+                                    <i class="fas fa-calendar"></i> Selected Dates
+                                </div>
+                                <div class="calendar-preview">
+                                    <!-- Calendar will be populated dynamically -->
+                                </div>
+                            </div>
+                            
+                            <div class="form-status" id="leave-status">
+                                <i class="fas fa-info-circle"></i>
+                                <span>Upload your travel document to auto-fill this form</span>
+                            </div>
+                            
+                            <button type="submit" class="submit-btn" disabled>
+                                <i class="fas fa-paper-plane"></i> Submit Leave Request
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <!-- Success Screen -->
+                    <div class="success-screen" id="leave-success">
+                        <div class="success-icon">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <h2 class="success-title">Leave Request Submitted!</h2>
+                        <p class="success-message">Your manager has been notified</p>
+                        <div class="submission-id">Reference #LV-2025-0220</div>
+                    </div>
+                </div>
+
+                <!-- TalentMatch System -->
+                <div class="system-interface" id="talent-system">
+                    <div class="system-header">
+                        <i class="fas fa-user-tie"></i>
+                        <h2>Talent Acquisition System</h2>
+                    </div>
+                    
+                    <div class="talent-dashboard">
+                        <div class="candidate-info" id="candidate-info">
+                            <h3><i class="fas fa-id-card"></i> Candidate Profile</h3>
+                            <div class="info-placeholder">
+                                <i class="fas fa-user-circle"></i>
+                                <p>Upload resume to view candidate details</p>
+                            </div>
+                        </div>
+                        
+                        <div class="job-matches" id="job-matches">
+                            <h3><i class="fas fa-briefcase"></i> Job Matches</h3>
+                            <div class="matches-placeholder">
+                                <i class="fas fa-search"></i>
+                                <p>Matching positions will appear here</p>
+                            </div>
+                        </div>
+                        
+                        <div class="skills-analysis" id="skills-analysis">
+                            <h3><i class="fas fa-chart-radar"></i> Skills Analysis</h3>
+                            <div class="skills-placeholder">
+                                <i class="fas fa-chart-pie"></i>
+                                <p>Skills assessment pending</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Success Screen for Talent -->
+                    <div class="success-screen" id="talent-success">
+                        <div class="success-icon">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <h2 class="success-title">Interview Scheduled!</h2>
+                        <p class="success-message">Calendar invites sent to all parties</p>
+                        <div class="submission-id">Meeting ID #INT-2025-0482</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        
+        <!-- Full-Screen Conclusion Overlay -->
+        <div class="conclusion-overlay" id="conclusionOverlay">
+            <div class="conclusion-content">
+                <div class="conclusion-header">
+                    <h1 class="conclusion-title">
+                        <img src="../img/Smartgent_logo_500x500.png" alt="Smartgent Logo" style="height: 56px; width: 56px;">
+                        <span>Smartgent</span>
+                    </h1>
+                    <p class="conclusion-subtitle">Enterprise AI Assistant</p>
+                </div>
+                
+                <div class="conclusion-metrics">
+                    <div class="conclusion-metric">
+                        <div class="metric-icon-wrap">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <div class="conclusion-metric-label">Conversational AI</div>
+                        <div class="conclusion-metric-desc">Advanced LLM Chat</div>
+                    </div>
+                    
+                    <div class="conclusion-metric">
+                        <div class="metric-icon-wrap">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <div class="conclusion-metric-label">RAG System</div>
+                        <div class="conclusion-metric-desc">Real-time Retrieval</div>
+                    </div>
+                    
+                    <div class="conclusion-metric">
+                        <div class="metric-icon-wrap">
+                            <i class="fas fa-cogs"></i>
+                        </div>
+                        <div class="conclusion-metric-label">Workflow Engine</div>
+                        <div class="conclusion-metric-desc">Process Automation</div>
+                    </div>
+                    
+                </div>
+                
+                <div class="conclusion-cta">
+                    <a href="https://jarvisnsam.com/smartgent/" target="_blank" class="conclusion-btn">
+                        <span>Explore Smartgent</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <p class="conclusion-tagline">Streamline. Automate. Transform.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
