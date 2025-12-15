@@ -114,20 +114,31 @@
             font-size: 1.5rem;
             font-weight: 700;
         }
-        .back-btn {
+        .control-panel {
             display: flex;
             align-items: center;
             gap: 8px;
-            padding: 0.5rem 1rem;
+        }
+        .control-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
             background: var(--card-bg);
             border: 1px solid var(--border-color);
-            border-radius: 8px;
+            border-radius: 6px;
             color: var(--text-primary);
-            text-decoration: none;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
             transition: all 0.2s;
         }
-        .back-btn:hover {
+        .control-btn:hover {
             background: var(--border-color);
+        }
+        .control-btn.active {
+            background: var(--text-primary);
+            color: var(--container-bg);
         }
         .demo-area {
             flex: 1;
@@ -368,6 +379,28 @@
             font-weight: 500;
         }
 
+        /* Fullscreen mode */
+        body.fullscreen {
+            padding: 0;
+        }
+        body.fullscreen .container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 0;
+            z-index: 9999;
+        }
+        body.fullscreen .app-header {
+            padding: 1rem 1.5rem;
+        }
+        body.fullscreen .demo-area {
+            height: calc(100vh - 80px);
+        }
+
         /* Mobile Responsive */
         @media (max-width: 768px) {
             body {
@@ -402,15 +435,11 @@
             .logo span {
                 font-size: 1.2rem;
             }
-            .back-btn {
-                padding: 0.4rem 0.75rem;
-                font-size: 0.85rem;
-            }
-            .back-btn span {
+            .control-btn span {
                 display: none;
             }
-            .back-btn i {
-                margin: 0;
+            .control-btn {
+                padding: 8px 10px;
             }
             .demo-area {
                 margin-top: 60px;
@@ -473,6 +502,71 @@
                 max-width: 180px;
             }
         }
+
+        /* Ending Scene */
+        .ending-scene {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s, visibility 0.5s;
+            z-index: 50;
+        }
+        .ending-scene.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        .ending-content {
+            text-align: center;
+            color: white;
+        }
+        .ending-icon {
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 3rem;
+        }
+        .ending-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .ending-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+        .ending-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            font-size: 1rem;
+        }
+        @media (max-width: 768px) {
+            .ending-icon {
+                width: 80px;
+                height: 80px;
+                font-size: 2rem;
+            }
+            .ending-title {
+                font-size: 1.8rem;
+            }
+            .ending-subtitle {
+                font-size: 1rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -484,10 +578,17 @@
                 </div>
                 <span>Animake</span>
             </a>
-            <a href="../" class="back-btn">
-                <i class="fas fa-arrow-left"></i>
-                <span>Back to Prototyper</span>
-            </a>
+            <div class="control-panel">
+                <button id="homeBtn" class="control-btn" title="Home">
+                    <i class="fas fa-home"></i>
+                </button>
+                <button id="fullscreenBtn" class="control-btn" title="Fullscreen">
+                    <i class="fas fa-expand"></i>
+                </button>
+                <button id="playPauseBtn" class="control-btn active" title="Pause">
+                    <i class="fas fa-pause"></i>
+                </button>
+            </div>
         </header>
 
         <div class="demo-area">
@@ -542,6 +643,21 @@
                     <i class="fas fa-redo"></i> Try Again
                 </button>
             </div>
+
+            <!-- Ending Scene (for autoplay mode) -->
+            <div class="ending-scene" id="endingScene">
+                <div class="ending-content">
+                    <div class="ending-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h2 class="ending-title">Hands-On Guide</h2>
+                    <p class="ending-subtitle">Let me teach you how to make it yourself</p>
+                    <a href="https://masterconcept.ai/cloud-computing-academy/" target="_blank" class="ending-cta" style="text-decoration: none; color: white;">
+                        <span>Know More</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
         </div>
 
         <!-- Dragging file indicator -->
@@ -569,6 +685,19 @@
         const fileNameDisplay = document.getElementById('fileNameDisplay');
         const previewImage = document.getElementById('previewImage');
         const processingImage = document.getElementById('processingImage');
+        const homeBtn = document.getElementById('homeBtn');
+        const fullscreenBtn = document.getElementById('fullscreenBtn');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const endingScene = document.getElementById('endingScene');
+
+        // Check URL params for autoplay sequence
+        const urlParams = new URLSearchParams(window.location.search);
+        const autoplay = urlParams.get('autoplay') === '1';
+
+        // Home button
+        homeBtn.addEventListener('click', () => {
+            window.location.href = '../';
+        });
 
         // Demo samples - rotate through these
         const samples = [
@@ -578,6 +707,10 @@
 
         let currentSampleIndex = 0;
         const VIDEO_DISPLAY_TIME = 8000; // 8 seconds
+        const ENDING_SCENE_DURATION = 5000; // 5 seconds for ending scene
+        let isPaused = false;
+        let loopCount = 0;
+        const MAX_LOOPS_IN_AUTOPLAY = 2; // Play through all samples twice in autoplay mode
 
         const statusMessages = [
             'Analyzing image structure...',
@@ -728,13 +861,105 @@
 
                 // After video display time, move to next sample and restart
                 setTimeout(() => {
+                    if (isPaused) return; // Don't continue if paused
+
                     resultArea.classList.remove('visible');
                     animationRunning = false;
+
+                    // Check if we've completed a full loop (last sample)
+                    if (currentSampleIndex === samples.length - 1) {
+                        loopCount++;
+                        // Show ending scene after completing all samples
+                        showEndingScene();
+                        return;
+                    }
+
                     nextSample();
                     setTimeout(startDemoAnimation, 500);
                 }, VIDEO_DISPLAY_TIME);
             }, 300);
         }
+
+        function showEndingScene() {
+            currentPhase = 'ending';
+            endingScene.classList.add('visible');
+
+            // After showing ending scene
+            setTimeout(() => {
+                if (!isPaused) {
+                    if (autoplay) {
+                        // In autoplay mode, redirect back to index
+                        window.location.href = '../?sequence=complete';
+                    } else {
+                        // When visiting directly, hide ending and restart loop
+                        endingScene.classList.remove('visible');
+                        currentSampleIndex = 0;
+                        nextSample();
+                        setTimeout(startDemoAnimation, 500);
+                    }
+                }
+            }, ENDING_SCENE_DURATION);
+        }
+
+        // Fullscreen button handler - use browser native fullscreen
+        fullscreenBtn.addEventListener('click', () => {
+            toggleFullscreen();
+        });
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+                document.body.classList.add('fullscreen');
+                fullscreenBtn.innerHTML = '<i class="fas fa-compress"></i>';
+                fullscreenBtn.title = 'Exit Fullscreen';
+            } else {
+                document.exitFullscreen();
+                document.body.classList.remove('fullscreen');
+                fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
+                fullscreenBtn.title = 'Fullscreen';
+            }
+        }
+
+        // Listen for fullscreen change events
+        document.addEventListener('fullscreenchange', () => {
+            if (!document.fullscreenElement) {
+                document.body.classList.remove('fullscreen');
+                fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
+                fullscreenBtn.title = 'Fullscreen';
+            }
+        });
+
+        // Play/Pause button handler
+        function updatePlayPauseButton() {
+            if (isPaused) {
+                playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+                playPauseBtn.title = 'Play';
+                playPauseBtn.classList.remove('active');
+            } else {
+                playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                playPauseBtn.title = 'Pause';
+                playPauseBtn.classList.add('active');
+            }
+        }
+
+        playPauseBtn.addEventListener('click', () => {
+            isPaused = !isPaused;
+            updatePlayPauseButton();
+
+            if (isPaused) {
+                // Pause the video if it's playing
+                if (currentPhase === 'complete' && !resultVideo.paused) {
+                    resultVideo.pause();
+                }
+            } else {
+                // Resume - restart demo if idle, or resume video
+                if (currentPhase === 'complete' && resultVideo.paused) {
+                    resultVideo.play();
+                } else if (!animationRunning) {
+                    startDemoAnimation();
+                }
+            }
+        });
 
         // Restart button (hidden but functional)
         restartBtn.addEventListener('click', () => {
@@ -744,7 +969,19 @@
 
         // Auto-start demo after page load
         window.addEventListener('load', () => {
-            setTimeout(startDemoAnimation, 1500);
+            // If already in fullscreen, update UI
+            if (document.fullscreenElement) {
+                document.body.classList.add('fullscreen');
+                fullscreenBtn.innerHTML = '<i class="fas fa-compress"></i>';
+                fullscreenBtn.title = 'Exit Fullscreen';
+            }
+
+            if (autoplay) {
+                // In autoplay mode, start immediately
+                setTimeout(startDemoAnimation, 500);
+            } else {
+                setTimeout(startDemoAnimation, 1500);
+            }
         });
     </script>
 </body>

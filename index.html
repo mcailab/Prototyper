@@ -217,16 +217,63 @@
             background: linear-gradient(135deg, #f472b6 0%, #ec4899 100%);
             color: white;
         }
+        /* Play All Button */
+        .play-all-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 1.5rem;
+            padding: 12px 28px;
+            background: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #667eea;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .play-all-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+        }
+        .play-all-btn i {
+            font-size: 1.1rem;
+        }
+        /* Sequence complete notification */
+        .sequence-complete {
+            display: none;
+            margin-top: 1rem;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 8px;
+            color: white;
+            font-size: 0.9rem;
+        }
+        .sequence-complete.visible {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <div class="header-title">
+            <a href="./" class="header-title" style="text-decoration: none;">
                 <i class="fas fa-bolt bolt-icon"></i>
                 <h1>Prototyper</h1>
-            </div>
+            </a>
             <p class="subtitle">Interactive Product Demos & Prototypes</p>
+            <button class="play-all-btn" id="playAllBtn">
+                <i class="fas fa-play"></i>
+                <span>Auto Play</span>
+            </button>
+            <div class="sequence-complete" id="sequenceComplete">
+                <i class="fas fa-check-circle"></i>
+                <span>Demo sequence complete!</span>
+            </div>
         </header>
         <div class="demo-grid">
             <!-- HIDDEN: Enterprise MCP Connector - Uncomment to restore
@@ -245,6 +292,13 @@
                 <img src="recap/recap-logo.png" alt="Recap" class="demo-icon-img">
                 <span class="demo-name">Recap</span>
                 <span class="demo-desc">AI Meeting Notes with Transcription & Smart Summarization</span>
+            </a>
+            <a href="animake/" class="demo-card">
+                <div class="demo-icon-box animake">
+                    <i class="fas fa-film"></i>
+                </div>
+                <span class="demo-name">Animake</span>
+                <span class="demo-desc">Transform Static Images into Animated Videos</span>
             </a>
             <div class="demo-card-expandable">
                 <div class="card-header">
@@ -267,17 +321,35 @@
                     </a>
                 </div>
             </div>
-            <a href="animake/" class="demo-card">
-                <div class="demo-icon-box animake">
-                    <i class="fas fa-film"></i>
-                </div>
-                <span class="demo-name">Animake</span>
-                <span class="demo-desc">Transform Static Images into Animated Videos</span>
-            </a>
         </div>
     </div>
     <footer>
         &copy; 2025 <a href="https://github.com/mcailab" target="_blank">MCAI Lab</a>. All rights reserved.
     </footer>
+
+    <script>
+        const playAllBtn = document.getElementById('playAllBtn');
+        const sequenceComplete = document.getElementById('sequenceComplete');
+
+        // Check if returning from completed sequence
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('sequence') === 'complete') {
+            sequenceComplete.classList.add('visible');
+            // Hide the notification after 5 seconds
+            setTimeout(() => {
+                sequenceComplete.classList.remove('visible');
+            }, 5000);
+            // Clean up URL
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+
+        // Play All button - starts the auto-sequence
+        // Sequence: Enterprise AI Assistant → Recap → Animake
+        playAllBtn.addEventListener('click', () => {
+            // Navigate to first demo with autoplay param
+            // Each page will handle its own fullscreen on user interaction
+            window.location.href = 'etpai/?autoplay=1';
+        });
+    </script>
 </body>
 </html>

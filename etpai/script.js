@@ -6,6 +6,10 @@ let autoPlayInterval = null;
 let messageQueue = [];
 let currentStep = 0;
 
+// Check URL params for autoplay sequence from index page
+const urlParams = new URLSearchParams(window.location.search);
+const autoplaySequence = urlParams.get('autoplay') === '1';
+
 // Chat Messages for Each Use Case
 const chatFlows = {
     expense: [
@@ -61,7 +65,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // Start auto-play by default - show opening slide first
     if (isAutoPlay) {
         updatePlayPauseButton();
-        
+
+        // If in autoplay sequence, check if already in fullscreen and update UI
+        if (autoplaySequence && document.fullscreenElement) {
+            document.body.classList.add('presentation-mode');
+            const fullscreenBtn = document.getElementById('fullscreenBtn');
+            if (fullscreenBtn) {
+                fullscreenBtn.innerHTML = '<i class="fas fa-compress"></i>';
+                fullscreenBtn.title = 'Exit Fullscreen';
+            }
+        }
+
         // Show opening slide first
         showOpeningSlide(() => {
             // After opening slide, start with expense tab
@@ -131,9 +145,15 @@ function showOpeningSlide(callback) {
 
 // Control Panel Management
 function initializeControls() {
+    const homeBtn = document.getElementById('homeBtn');
     const fullscreenBtn = document.getElementById('fullscreenBtn');
     const playPauseBtn = document.getElementById('playPauseBtn');
-    
+
+    if (homeBtn) {
+        homeBtn.addEventListener('click', () => {
+            window.location.href = '../';
+        });
+    }
     if (fullscreenBtn) {
         fullscreenBtn.addEventListener('click', () => toggleFullscreen());
     }
@@ -179,10 +199,12 @@ function togglePlayPause() {
 function updatePlayPauseButton() {
     const playPauseBtn = document.getElementById('playPauseBtn');
     if (isPaused) {
-        playPauseBtn.innerHTML = '<i class="fas fa-play"></i><span>Play</span>';
+        playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+        playPauseBtn.title = 'Play';
         playPauseBtn.classList.remove('active');
     } else {
-        playPauseBtn.innerHTML = '<i class="fas fa-pause"></i><span>Pause</span>';
+        playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+        playPauseBtn.title = 'Pause';
         playPauseBtn.classList.add('active');
     }
 }
@@ -1148,9 +1170,16 @@ function showROIDashboard() {
         if (isAutoPlay) {
             setTimeout(() => {
                 if (isAutoPlay && !isPaused) {
-                    // Hide conclusion and restart
+                    // Hide conclusion
                     conclusionOverlay.classList.remove('show');
-                    // Smooth restart - go back to expense tab
+
+                    // If in autoplay sequence from index page, redirect to next demo (Recap)
+                    if (autoplaySequence) {
+                        window.location.href = '../recap/?autoplay=1';
+                        return;
+                    }
+
+                    // Otherwise, smooth restart - go back to expense tab
                     switchTab('expense');
                 }
             }, 12000); // Increased from 8000 to 12000 (12 seconds)
@@ -1263,17 +1292,19 @@ function handleKeyPress(e) {
 // Fullscreen functionality
 function toggleFullscreen() {
     const fullscreenBtn = document.getElementById('fullscreenBtn');
-    
+
     if (!document.fullscreenElement) {
         // Enter fullscreen
         document.documentElement.requestFullscreen();
         document.body.classList.add('presentation-mode');
-        fullscreenBtn.innerHTML = '<i class="fas fa-compress"></i><span>Exit</span>';
+        fullscreenBtn.innerHTML = '<i class="fas fa-compress"></i>';
+        fullscreenBtn.title = 'Exit Fullscreen';
     } else {
         // Exit fullscreen
         document.exitFullscreen();
         document.body.classList.remove('presentation-mode');
-        fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i><span>Fullscreen</span>';
+        fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
+        fullscreenBtn.title = 'Fullscreen';
     }
 }
 
@@ -1284,7 +1315,8 @@ function exitFullscreen() {
     document.body.classList.remove('presentation-mode');
     const fullscreenBtn = document.getElementById('fullscreenBtn');
     if (fullscreenBtn) {
-        fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i><span>Fullscreen</span>';
+        fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
+        fullscreenBtn.title = 'Fullscreen';
     }
 }
 
