@@ -4,7 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prototyper</title>
+    <!-- Favicon - Bolt icon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512'><path fill='%23667eea' d='M349.4 44.6c5.9-13.7 1.5-29.7-10.6-38.5s-28.6-8-39.9 1.8l-256 224c-10 8.8-13.6 22.9-8.9 35.3S50.7 288 64 288H175.5L98.6 467.4c-5.9 13.7-1.5 29.7 10.6 38.5s28.6 8 39.9-1.8l256-224c10-8.8 13.6-22.9 8.9-35.3s-16.6-20.7-30-20.7H272.5L349.4 44.6z'/></svg>">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        .header-title {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+        .header-title .bolt-icon {
+            font-size: 2.5rem;
+            color: #fff;
+        }
         * {
             box-sizing: border-box;
             margin: 0;
@@ -103,12 +117,88 @@
         footer a:hover {
             text-decoration: underline;
         }
+        /* Voice Agent expandable card */
+        .demo-card-expandable {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            color: #333;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .demo-card-expandable:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+        }
+        .demo-card-expandable .card-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+        .demo-card-expandable .demo-icon-img {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 0.75rem;
+        }
+        .demo-card-expandable .demo-name {
+            margin-bottom: 0.25rem;
+        }
+        .demo-card-expandable .demo-desc {
+            font-size: 0.85rem;
+            margin-bottom: 0;
+        }
+        .sub-demos {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+            width: 100%;
+            justify-content: center;
+            flex-wrap: nowrap;
+        }
+        .sub-demo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #333;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: background 0.2s;
+            flex: 1;
+            min-width: 0;
+        }
+        .sub-demo:hover {
+            background: #f5f5f5;
+        }
+        .sub-demo img {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            object-fit: contain;
+            background: white;
+            margin-bottom: 0.25rem;
+        }
+        .sub-demo span {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #555;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Prototyper</h1>
+            <div class="header-title">
+                <i class="fas fa-bolt bolt-icon"></i>
+                <h1>Prototyper</h1>
+            </div>
             <p class="subtitle">Interactive Product Demos & Prototypes</p>
         </header>
         <div class="demo-grid">
@@ -127,6 +217,27 @@
                 <span class="demo-name">Recap</span>
                 <span class="demo-desc">AI Meeting Notes with Transcription & Smart Summarization</span>
             </a>
+            <div class="demo-card-expandable">
+                <div class="card-header">
+                    <img src="voiceagent/11lab.png" alt="Voice Agent" class="demo-icon-img">
+                    <span class="demo-name">Voice Agent</span>
+                    <span class="demo-desc">Conversational AI Customer Service</span>
+                </div>
+                <div class="sub-demos">
+                    <a href="https://masterconcept.ai/lab/fehd.html" class="sub-demo" target="_blank">
+                        <img src="https://upload.wikimedia.org/wikipedia/en/thumb/5/5c/Food_and_Environmental_Hygiene_Department_Logo.svg/1200px-Food_and_Environmental_Hygiene_Department_Logo.svg.png" alt="FEHD">
+                        <span>FEHD</span>
+                    </a>
+                    <a href="https://masterconcept.ai/lab/lockly-cs-agent.html" class="sub-demo" target="_blank">
+                        <img src="https://play-lh.googleusercontent.com/VSLMT4ZNdjbumINsM-fQbPilIakv02oYSvx3IKpeYjmt6x-aeadT0iyDNe8NbIwzAIaF" alt="Lockly">
+                        <span>Lockly</span>
+                    </a>
+                    <a href="https://aimwork.ai/demo-csd/" class="sub-demo" target="_blank">
+                        <img src="https://upload.wikimedia.org/wikipedia/en/thumb/7/7f/HK_Correctional_Services_Logo.svg/963px-HK_Correctional_Services_Logo.svg.png" alt="CSD">
+                        <span>CSD</span>
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
     <footer>
