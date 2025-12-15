@@ -367,6 +367,112 @@
             max-width: 260px;
             font-weight: 500;
         }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 0;
+                align-items: flex-start;
+                overflow-y: auto;
+            }
+            .container {
+                border-radius: 0;
+                padding: 0;
+                height: 100vh;
+                max-height: none;
+                box-shadow: none;
+            }
+            .app-header {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                background: var(--container-bg);
+                padding: 0.75rem 1rem;
+                margin-bottom: 0;
+                z-index: 100;
+                box-shadow: 0 2px 10px var(--shadow-color);
+                border-bottom: 1px solid var(--border-color);
+            }
+            .logo-icon {
+                width: 32px;
+                height: 32px;
+                font-size: 1rem;
+            }
+            .logo span {
+                font-size: 1.2rem;
+            }
+            .back-btn {
+                padding: 0.4rem 0.75rem;
+                font-size: 0.85rem;
+            }
+            .back-btn span {
+                display: none;
+            }
+            .back-btn i {
+                margin: 0;
+            }
+            .demo-area {
+                margin-top: 60px;
+                height: calc(100vh - 60px);
+                padding: 1rem;
+            }
+            .upload-zone {
+                height: 300px;
+                max-width: 100%;
+            }
+            .upload-icon {
+                font-size: 3rem;
+                margin-bottom: 1rem;
+            }
+            .upload-text {
+                font-size: 1rem;
+            }
+            .upload-subtext {
+                font-size: 0.8rem;
+            }
+            .preview-image,
+            .processing-container,
+            .result-video {
+                width: 100%;
+                max-width: 100%;
+            }
+            .file-card {
+                padding: 0.75rem;
+            }
+            .file-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+            .file-info h4 {
+                font-size: 0.9rem;
+            }
+            .processing-bar-container {
+                max-width: 100%;
+                padding: 0 1rem;
+            }
+            .result-badge {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+            .restart-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.85rem;
+            }
+            .drag-file {
+                width: 200px;
+                height: 160px;
+            }
+            .drag-file img {
+                width: 170px;
+                height: 110px;
+            }
+            .drag-file span {
+                font-size: 0.8rem;
+                max-width: 180px;
+            }
+        }
     </style>
 </head>
 <body>
