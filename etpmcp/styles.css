@@ -11,11 +11,35 @@
     --successColor: #10b981;
     --warningColor: #f59e0b;
     --errorColor: #ef4444;
-    
+
     /* Chat colors */
     --chatBg: #ffffff;
     --messageBg: #f1f3f5;
     --inputBg: #f8f9fa;
+
+    /* Background gradient */
+    --bgGradientStart: #667eea;
+    --bgGradientEnd: #764ba2;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --lightBg: #1e293b;
+        --whiteBg: #0f172a;
+        --darkText: #f1f5f9;
+        --lightText: #94a3b8;
+        --borderColor: #334155;
+        --shadowColor: rgba(0, 0, 0, 0.3);
+
+        /* Chat colors */
+        --chatBg: #1e293b;
+        --messageBg: #334155;
+        --inputBg: #1e293b;
+
+        /* Background gradient */
+        --bgGradientStart: #1a1a2e;
+        --bgGradientEnd: #16213e;
+    }
 }
 
 * {
@@ -26,7 +50,7 @@
 
 body {
     font-family: var(--fontFamily);
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, var(--bgGradientStart) 0%, var(--bgGradientEnd) 100%);
     color: var(--darkText);
     overflow: hidden;
     height: 100vh;
