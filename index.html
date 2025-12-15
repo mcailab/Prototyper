@@ -190,6 +190,22 @@
             font-weight: 600;
             color: #555;
         }
+        /* Icon-based demo card */
+        .demo-icon-box {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin-bottom: 1.25rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .demo-icon-box.animake {
+            background: linear-gradient(135deg, #f472b6 0%, #ec4899 100%);
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -238,6 +254,13 @@
                     </a>
                 </div>
             </div>
+            <a href="animake/" class="demo-card">
+                <div class="demo-icon-box animake">
+                    <i class="fas fa-film"></i>
+                </div>
+                <span class="demo-name">Animake</span>
+                <span class="demo-desc">Transform Static Images into Animated Videos</span>
+            </a>
         </div>
     </div>
     <footer>

@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animake - Static to Animated</title>
+    <!-- Favicon - Film icon matching the logo -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><path fill='%23f472b6' d='M0 96C0 60.7 28.7 32 64 32H448c35.3 0 64 28.7 64 64V416c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V96zM48 368v32c0 8.8 7.2 16 16 16H96c8.8 0 16-7.2 16-16V368c0-8.8-7.2-16-16-16H64c-8.8 0-16 7.2-16 16zm368-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V368c0-8.8-7.2-16-16-16H416zM48 240v32c0 8.8 7.2 16 16 16H96c8.8 0 16-7.2 16-16V240c0-8.8-7.2-16-16-16H64c-8.8 0-16 7.2-16 16zm368-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V240c0-8.8-7.2-16-16-16H416zM48 112v32c0 8.8 7.2 16 16 16H96c8.8 0 16-7.2 16-16V112c0-8.8-7.2-16-16-16H64c-8.8 0-16 7.2-16 16zM416 96c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V112c0-8.8-7.2-16-16-16H416zM160 128v64c0 17.7 14.3 32 32 32H320c17.7 0 32-14.3 32-32V128c0-17.7-14.3-32-32-32H192c-17.7 0-32 14.3-32 32zm32 160c-17.7 0-32 14.3-32 32v64c0 17.7 14.3 32 32 32H320c17.7 0 32-14.3 32-32V320c0-17.7-14.3-32-32-32H192z'/></svg>">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #fff;
+            overflow: hidden;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .app-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 2rem;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: inherit;
+        }
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #f472b6 0%, #ec4899 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+        .logo span {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0.5rem 1rem;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .back-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        .demo-area {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        /* Upload Zone */
+        .upload-zone {
+            width: 100%;
+            max-width: 800px;
+            height: 500px;
+            border: 3px dashed rgba(244, 114, 182, 0.5);
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(244, 114, 182, 0.05);
+            transition: all 0.3s;
+            position: absolute;
+        }
+        .upload-zone.drag-over {
+            border-color: #f472b6;
+            background: rgba(244, 114, 182, 0.15);
+            transform: scale(1.02);
+        }
+        .upload-zone.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.95);
+        }
+        .upload-icon {
+            font-size: 4rem;
+            color: #f472b6;
+            margin-bottom: 1.5rem;
+        }
+        .upload-text {
+            font-size: 1.25rem;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 0.5rem;
+        }
+        .upload-subtext {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.5);
+        }
+        /* File Preview */
+        .file-preview {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s;
+        }
+        .file-preview.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .file-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .file-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+        .file-info h4 {
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+        .file-info p {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.6);
+        }
+        .preview-image {
+            width: 700px;
+            max-width: 90vw;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+        }
+        /* Processing State */
+        .processing-overlay {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.5s;
+        }
+        .processing-overlay.visible {
+            opacity: 1;
+        }
+        .processing-container {
+            position: relative;
+            width: 700px;
+            max-width: 90vw;
+        }
+        .processing-image {
+            width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+        }
+        .processing-bar-container {
+            margin-top: 2rem;
+            width: 100%;
+            max-width: 400px;
+        }
+        .processing-text {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        .processing-bar {
+            height: 8px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .processing-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #f472b6, #ec4899);
+            border-radius: 4px;
+            transition: width 0.1s linear;
+        }
+        .processing-status {
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.7);
+            text-align: center;
+        }
+        /* Result State */
+        .result-area {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.95);
+            transition: all 0.5s;
+        }
+        .result-area.visible {
+            opacity: 1;
+            pointer-events: auto;
+            transform: scale(1);
+        }
+        .result-video {
+            width: 700px;
+            max-width: 90vw;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+        }
+        .result-badge {
+            margin-top: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-radius: 50px;
+            font-weight: 600;
+        }
+        .result-badge i {
+            font-size: 1.1rem;
+        }
+        .restart-btn {
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            display: none;
+        }
+        .restart-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        /* Dragging file indicator - larger size */
+        .drag-file {
+            position: fixed;
+            width: 280px;
+            height: 220px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            opacity: 0;
+            z-index: 1000;
+            transition: opacity 0.2s;
+        }
+        .drag-file.visible {
+            opacity: 1;
+        }
+        .drag-file img {
+            width: 240px;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 0.75rem;
+        }
+        .drag-file span {
+            font-size: 0.9rem;
+            color: #333;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 260px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="app-header">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-film"></i>
+                </div>
+                <span>Animake</span>
+            </a>
+            <a href="../" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+                <span>Back to Prototyper</span>
+            </a>
+        </header>
+
+        <div class="demo-area">
+            <!-- Upload Zone -->
+            <div class="upload-zone" id="uploadZone">
+                <i class="fas fa-cloud-arrow-up upload-icon"></i>
+                <p class="upload-text">Drag & drop your image here</p>
+                <p class="upload-subtext">Transform static images into animated videos</p>
+            </div>
+
+            <!-- File Preview (shown briefly) -->
+            <div class="file-preview" id="filePreview">
+                <div class="file-card">
+                    <div class="file-icon">
+                        <i class="fas fa-image"></i>
+                    </div>
+                    <div class="file-info">
+                        <h4 id="fileNameDisplay">hkgov_finance.png</h4>
+                        <p>PNG Image</p>
+                    </div>
+                </div>
+                <img src="hkgov_finance.png" alt="Preview" class="preview-image" id="previewImage">
+            </div>
+
+            <!-- Processing State -->
+            <div class="processing-overlay" id="processingOverlay">
+                <div class="processing-container">
+                    <img src="hkgov_finance.png" alt="Processing" class="processing-image" id="processingImage">
+                </div>
+                <div class="processing-bar-container">
+                    <div class="processing-text">
+                        <span>Generating animation...</span>
+                        <span id="progressPercent">0%</span>
+                    </div>
+                    <div class="processing-bar">
+                        <div class="processing-fill" id="progressFill"></div>
+                    </div>
+                    <p class="processing-status" id="processingStatus">Analyzing image structure...</p>
+                </div>
+            </div>
+
+            <!-- Result Area -->
+            <div class="result-area" id="resultArea">
+                <video class="result-video" id="resultVideo" muted playsinline>
+                    <source src="hkgov_finance.mp4" type="video/mp4" id="videoSource">
+                </video>
+                <div class="result-badge">
+                    <i class="fas fa-check"></i>
+                    <span>Animation Complete!</span>
+                </div>
+                <button class="restart-btn" id="restartBtn">
+                    <i class="fas fa-redo"></i> Try Again
+                </button>
+            </div>
+        </div>
+
+        <!-- Dragging file indicator -->
+        <div class="drag-file" id="dragFile">
+            <img src="hkgov_finance.png" alt="file" id="dragFileImage">
+            <span id="dragFileName">hkgov_finance.png</span>
+        </div>
+    </div>
+
+    <script>
+        // Demo Animation Script
+        const uploadZone = document.getElementById('uploadZone');
+        const filePreview = document.getElementById('filePreview');
+        const processingOverlay = document.getElementById('processingOverlay');
+        const resultArea = document.getElementById('resultArea');
+        const progressFill = document.getElementById('progressFill');
+        const progressPercent = document.getElementById('progressPercent');
+        const processingStatus = document.getElementById('processingStatus');
+        const resultVideo = document.getElementById('resultVideo');
+        const videoSource = document.getElementById('videoSource');
+        const restartBtn = document.getElementById('restartBtn');
+        const dragFile = document.getElementById('dragFile');
+        const dragFileImage = document.getElementById('dragFileImage');
+        const dragFileName = document.getElementById('dragFileName');
+        const fileNameDisplay = document.getElementById('fileNameDisplay');
+        const previewImage = document.getElementById('previewImage');
+        const processingImage = document.getElementById('processingImage');
+
+        // Demo samples - rotate through these
+        const samples = [
+            { image: 'hkgov_finance.png', video: 'hkgov_finance.mp4', name: 'hkgov_finance.png' },
+            { image: 'jp-sakura-2026.png', video: 'jp-sakura-2026.mp4', name: 'jp-sakura-2026.png' }
+        ];
+
+        let currentSampleIndex = 0;
+        const VIDEO_DISPLAY_TIME = 6000; // 6 seconds
+
+        const statusMessages = [
+            'Analyzing image structure...',
+            'Detecting motion regions...',
+            'Generating depth map...',
+            'Creating animation layers...',
+            'Applying motion effects...',
+            'Rendering final video...',
+            'Finalizing output...'
+        ];
+
+        let animationRunning = false;
+        let currentPhase = 'idle';
+
+        function getCurrentSample() {
+            return samples[currentSampleIndex];
+        }
+
+        function nextSample() {
+            currentSampleIndex = (currentSampleIndex + 1) % samples.length;
+        }
+
+        function updateSampleAssets() {
+            const sample = getCurrentSample();
+            dragFileImage.src = sample.image;
+            dragFileName.textContent = sample.name;
+            fileNameDisplay.textContent = sample.name;
+            previewImage.src = sample.image;
+            processingImage.src = sample.image;
+            videoSource.src = sample.video;
+            resultVideo.load();
+        }
+
+        function resetDemo() {
+            currentPhase = 'idle';
+            uploadZone.classList.remove('hidden', 'drag-over');
+            filePreview.classList.remove('visible');
+            processingOverlay.classList.remove('visible');
+            resultArea.classList.remove('visible');
+            dragFile.classList.remove('visible');
+            progressFill.style.width = '0%';
+            progressPercent.textContent = '0%';
+            resultVideo.pause();
+            resultVideo.currentTime = 0;
+        }
+
+        function startDemoAnimation() {
+            if (animationRunning) return;
+            animationRunning = true;
+            resetDemo();
+            updateSampleAssets();
+
+            // Start the automated demo sequence
+            setTimeout(simulateDragStart, 1000);
+        }
+
+        function simulateDragStart() {
+            currentPhase = 'dragging';
+            dragFile.classList.add('visible');
+
+            // Animate the drag file from bottom-left to center
+            const startX = 100;
+            const startY = window.innerHeight - 250;
+            const endX = window.innerWidth / 2 - 140;
+            const endY = window.innerHeight / 2 - 110;
+
+            dragFile.style.left = startX + 'px';
+            dragFile.style.top = startY + 'px';
+
+            let progress = 0;
+            const dragDuration = 1500;
+            const startTime = Date.now();
+
+            function animateDrag() {
+                const elapsed = Date.now() - startTime;
+                progress = Math.min(elapsed / dragDuration, 1);
+
+                // Easing function
+                const eased = 1 - Math.pow(1 - progress, 3);
+
+                const currentX = startX + (endX - startX) * eased;
+                const currentY = startY + (endY - startY) * eased;
+
+                dragFile.style.left = currentX + 'px';
+                dragFile.style.top = currentY + 'px';
+
+                // Add drag-over effect when near center
+                if (progress > 0.7) {
+                    uploadZone.classList.add('drag-over');
+                }
+
+                if (progress < 1) {
+                    requestAnimationFrame(animateDrag);
+                } else {
+                    // Drop the file
+                    setTimeout(simulateDrop, 200);
+                }
+            }
+
+            requestAnimationFrame(animateDrag);
+        }
+
+        function simulateDrop() {
+            dragFile.classList.remove('visible');
+            uploadZone.classList.remove('drag-over');
+            uploadZone.classList.add('hidden');
+
+            // Go directly to processing (which shows the image)
+            setTimeout(startProcessing, 300);
+        }
+
+        function startProcessing() {
+            currentPhase = 'processing';
+            processingOverlay.classList.add('visible');
+
+            let progress = 0;
+            let statusIndex = 0;
+
+            const processingInterval = setInterval(() => {
+                // Increase progress with some variation
+                const increment = Math.random() * 3 + 1;
+                progress = Math.min(progress + increment, 100);
+
+                progressFill.style.width = progress + '%';
+                progressPercent.textContent = Math.round(progress) + '%';
+
+                // Update status message
+                const newStatusIndex = Math.floor((progress / 100) * statusMessages.length);
+                if (newStatusIndex !== statusIndex && newStatusIndex < statusMessages.length) {
+                    statusIndex = newStatusIndex;
+                    processingStatus.textContent = statusMessages[statusIndex];
+                }
+
+                if (progress >= 100) {
+                    clearInterval(processingInterval);
+                    setTimeout(showResult, 500);
+                }
+            }, 100);
+        }
+
+        function showResult() {
+            currentPhase = 'complete';
+            processingOverlay.classList.remove('visible');
+
+            setTimeout(() => {
+                resultArea.classList.add('visible');
+                resultVideo.play();
+
+                // After video display time, move to next sample and restart
+                setTimeout(() => {
+                    resultArea.classList.remove('visible');
+                    animationRunning = false;
+                    nextSample();
+                    setTimeout(startDemoAnimation, 500);
+                }, VIDEO_DISPLAY_TIME);
+            }, 300);
+        }
+
+        // Restart button (hidden but functional)
+        restartBtn.addEventListener('click', () => {
+            resetDemo();
+            setTimeout(startDemoAnimation, 500);
+        });
+
+        // Auto-start demo after page load
+        window.addEventListener('load', () => {
+            setTimeout(startDemoAnimation, 1500);
+        });
+    </script>
+</body>
+</html>
