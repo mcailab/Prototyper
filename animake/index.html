@@ -768,7 +768,7 @@
         .ending-scene {
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            background: #000;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -781,52 +781,10 @@
             opacity: 1;
             visibility: visible;
         }
-        .ending-content {
-            text-align: center;
-            color: white;
-        }
-        .ending-icon {
-            width: 100px;
-            height: 100px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1.5rem;
-            font-size: 3rem;
-        }
-        .ending-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-        .ending-subtitle {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            margin-bottom: 2rem;
-        }
-        .ending-cta {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 12px 24px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 50px;
-            font-size: 1rem;
-        }
-        @media (max-width: 768px) {
-            .ending-icon {
-                width: 80px;
-                height: 80px;
-                font-size: 2rem;
-            }
-            .ending-title {
-                font-size: 1.8rem;
-            }
-            .ending-subtitle {
-                font-size: 1rem;
-            }
+        .ending-video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
     </style>
 </head>
@@ -934,17 +892,9 @@
 
             <!-- Ending Scene (for autoplay mode) -->
             <div class="ending-scene" id="endingScene">
-                <div class="ending-content">
-                    <div class="ending-icon">
-                        <i class="fas fa-graduation-cap"></i>
-                    </div>
-                    <h2 class="ending-title">Hands-On Guide</h2>
-                    <p class="ending-subtitle">Let me teach you how to make it yourself</p>
-                    <a href="https://masterconcept.ai/cloud-computing-academy/" target="_blank" class="ending-cta" style="text-decoration: none; color: white;">
-                        <span>Know More</span>
-                        <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
+                <video class="ending-video" id="endingVideo" muted playsinline>
+                    <source src="../Ending.mp4" type="video/mp4">
+                </video>
             </div>
         </div>
 
@@ -977,6 +927,7 @@
         const fullscreenBtn = document.getElementById('fullscreenBtn');
         const playPauseBtn = document.getElementById('playPauseBtn');
         const endingScene = document.getElementById('endingScene');
+        const endingVideo = document.getElementById('endingVideo');
 
         // Check URL params for autoplay sequence
         const urlParams = new URLSearchParams(window.location.search);
@@ -1435,20 +1386,26 @@
             currentPhase = 'ending';
             endingScene.classList.add('visible');
 
-            // After showing ending scene
-            setTimeout(() => {
-                if (!isPaused) {
-                    if (autoplay) {
-                        // In autoplay mode, redirect back to index
-                        window.location.href = '../?sequence=complete';
-                    } else {
-                        // When visiting directly, hide ending and restart loop from first sample
-                        endingScene.classList.remove('visible');
-                        currentSampleIndex = 0;
-                        setTimeout(startDemoAnimation, 500);
+            // Reset and play the ending video
+            endingVideo.currentTime = 0;
+            endingVideo.play();
+
+            // When video ends, wait 4 more seconds then continue
+            endingVideo.onended = () => {
+                setTimeout(() => {
+                    if (!isPaused) {
+                        if (autoplay) {
+                            // In autoplay mode, redirect to next demo (Slidemake)
+                            window.location.href = '../slidemake/?autoplay=1';
+                        } else {
+                            // When visiting directly, hide ending and restart loop from first sample
+                            endingScene.classList.remove('visible');
+                            currentSampleIndex = 0;
+                            setTimeout(startDemoAnimation, 500);
+                        }
                     }
-                }
-            }, ENDING_SCENE_DURATION);
+                }, 4000); // 4 second hold after video ends
+            };
         }
 
         // Fullscreen button handler - use browser native fullscreen
