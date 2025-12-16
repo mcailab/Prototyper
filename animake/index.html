@@ -140,6 +140,64 @@
             background: var(--text-primary);
             color: var(--container-bg);
         }
+        /* Tab Navigation */
+        .tab-navigation {
+            display: flex;
+            gap: 6px;
+        }
+        .tab-btn {
+            padding: 8px 12px;
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+        .tab-btn i {
+            font-size: 14px;
+        }
+        .tab-btn.active {
+            transform: translateY(-2px);
+        }
+        .tab-btn.image-active {
+            background: linear-gradient(135deg, #f472b6, #ec4899);
+            color: white;
+            border-color: #f472b6;
+            box-shadow: 0 4px 12px -2px rgba(244, 114, 182, 0.4);
+        }
+        .tab-btn.prompt-active {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            color: white;
+            border-color: #8b5cf6;
+            box-shadow: 0 4px 12px -2px rgba(139, 92, 246, 0.4);
+        }
+        .tab-btn:hover:not(.active) {
+            background: var(--border-color);
+            transform: translateY(-1px);
+        }
+        @media (max-width: 768px) {
+            .tab-navigation {
+                gap: 4px;
+            }
+            .tab-btn {
+                padding: 6px 10px;
+                font-size: 11px;
+            }
+            .tab-btn span {
+                display: none;
+            }
+            .tab-btn i {
+                font-size: 16px;
+                margin: 0;
+            }
+        }
         .demo-area {
             flex: 1;
             display: flex;
@@ -797,6 +855,16 @@
                 </div>
                 <span>Animake</span>
             </a>
+            <nav class="tab-navigation">
+                <button class="tab-btn active image-active" data-tab="image">
+                    <i class="fas fa-image"></i>
+                    <span>Image</span>
+                </button>
+                <button class="tab-btn" data-tab="prompt">
+                    <i class="fas fa-wand-magic-sparkles"></i>
+                    <span>Prompt</span>
+                </button>
+            </nav>
             <div class="control-panel">
                 <button id="homeBtn" class="control-btn" title="Home">
                     <i class="fas fa-home"></i>
@@ -938,6 +1006,54 @@
             window.location.href = '../';
         });
 
+        // Tab navigation - jump to specific demo type
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tabName = btn.dataset.tab;
+                jumpToDemo(tabName);
+            });
+        });
+
+        function jumpToDemo(tabName) {
+            // Clear all pending timeouts from previous animations
+            clearAllTimeouts();
+
+            // Reset current demo
+            resetDemo();
+            animationRunning = false;
+            isPaused = false;
+            updatePlayPauseButton();
+
+            // Find the sample index for the tab
+            let targetIndex = 0;
+            if (tabName === 'image') targetIndex = 0;
+            else if (tabName === 'prompt') targetIndex = 1;
+
+            currentSampleIndex = targetIndex;
+            updateTabUI(tabName);
+
+            // Start the demo for this tab
+            scheduleTimeout(startDemoAnimation, 300);
+        }
+
+        function updateTabUI(tabName) {
+            tabBtns.forEach(btn => {
+                btn.classList.remove('active', 'image-active', 'prompt-active');
+            });
+            const activeBtn = document.querySelector(`.tab-btn[data-tab="${tabName}"]`);
+            if (activeBtn) {
+                activeBtn.classList.add('active', `${tabName}-active`);
+            }
+        }
+
+        // Update tab UI when sample changes during auto-play
+        function updateTabFromSample() {
+            const sample = getCurrentSample();
+            let tabName = sample.type === 'prompt' ? 'prompt' : 'image';
+            updateTabUI(tabName);
+        }
+
         // Demo samples - rotate through these
         // type: 'image' = drag & drop image-to-video, 'prompt' = text prompt to video
         const samples = [
@@ -999,6 +1115,24 @@
 
         let animationRunning = false;
         let currentPhase = 'idle';
+        let pendingTimeouts = []; // Track all pending timeouts
+
+        // Wrapper for setTimeout that tracks timeouts
+        function scheduleTimeout(callback, delay) {
+            const id = setTimeout(() => {
+                // Remove from tracking array when executed
+                pendingTimeouts = pendingTimeouts.filter(t => t !== id);
+                callback();
+            }, delay);
+            pendingTimeouts.push(id);
+            return id;
+        }
+
+        // Clear all pending timeouts
+        function clearAllTimeouts() {
+            pendingTimeouts.forEach(id => clearTimeout(id));
+            pendingTimeouts = [];
+        }
 
         function getCurrentSample() {
             return samples[currentSampleIndex];
@@ -1055,19 +1189,22 @@
             animationRunning = true;
             resetDemo();
 
+            // Update tab UI to match current sample
+            updateTabFromSample();
+
             const sample = getCurrentSample();
 
             if (sample.type === 'prompt') {
                 // Text-to-video flow
                 currentStatusMessages = promptStatusMessages;
                 updateSampleAssets();
-                setTimeout(showPromptZone, 500);
+                scheduleTimeout(showPromptZone, 500);
             } else {
                 // Image-to-video flow (default)
                 currentStatusMessages = imageStatusMessages;
                 updateSampleAssets();
                 uploadZone.classList.remove('hidden');
-                setTimeout(simulateDragStart, 1000);
+                scheduleTimeout(simulateDragStart, 1000);
             }
         }
 
@@ -1077,7 +1214,7 @@
             promptZone.classList.add('visible');
 
             // Start typing animation after a brief delay
-            setTimeout(startTypingAnimation, 800);
+            scheduleTimeout(startTypingAnimation, 800);
         }
 
         function startTypingAnimation() {
@@ -1099,11 +1236,11 @@
                     promptInput.classList.remove('typing');
 
                     // Enable generate button
-                    setTimeout(() => {
+                    scheduleTimeout(() => {
                         generateBtn.classList.add('ready');
 
                         // Click the generate button after a moment
-                        setTimeout(clickGenerateButton, 800);
+                        scheduleTimeout(clickGenerateButton, 800);
                     }, 300);
                 }
             }, 50); // Typing speed
@@ -1112,12 +1249,12 @@
         function clickGenerateButton() {
             generateBtn.classList.add('clicked');
 
-            setTimeout(() => {
+            scheduleTimeout(() => {
                 generateBtn.classList.remove('clicked');
                 promptZone.classList.remove('visible');
 
                 // Go to chat-based flow
-                setTimeout(startChatFlow, 300);
+                scheduleTimeout(startChatFlow, 300);
             }, 200);
         }
 
@@ -1132,7 +1269,7 @@
             addChatBubble('user', sample.prompt);
 
             // After a moment, add AI thinking bubble
-            setTimeout(() => {
+            scheduleTimeout(() => {
                 addAIThinkingBubble();
 
                 // Start cycling through status messages
@@ -1196,7 +1333,7 @@
                 } else {
                     clearInterval(processingInterval);
                     // Processing complete, show result in chat
-                    setTimeout(showChatResult, 500);
+                    scheduleTimeout(showChatResult, 500);
                 }
             }, 800); // Change status every 800ms
         }
@@ -1211,7 +1348,7 @@
                 thinkingBubble.remove();
             }
 
-            // Add result bubble with video
+            // Add result bubble with just text (no video in chat)
             const resultBubble = document.createElement('div');
             resultBubble.className = 'chat-bubble ai';
             resultBubble.innerHTML = `
@@ -1221,9 +1358,6 @@
                 </div>
                 <div class="bubble-content">
                     Here's the 2026 cherry blossom forecast for Japan:
-                    <video class="chat-video" id="chatResultVideo" muted playsinline autoplay>
-                        <source src="${sample.video}" type="video/mp4">
-                    </video>
                     <div class="video-label">
                         <i class="fas fa-check-circle"></i>
                         <span>Video generated successfully</span>
@@ -1233,27 +1367,35 @@
             chatMessages.appendChild(resultBubble);
             chatMessages.scrollTop = chatMessages.scrollHeight;
 
-            // Get reference to the video
-            chatVideo = document.getElementById('chatResultVideo');
-            chatVideo.play();
-
-            // After video display time, continue to next sample
-            setTimeout(() => {
+            // Immediately expand to result view and play video there
+            scheduleTimeout(() => {
                 if (isPaused) return;
 
+                // Hide chat container
                 chatContainer.classList.remove('visible');
-                animationRunning = false;
 
-                // Check if we've completed a full loop (last sample)
-                if (currentSampleIndex === samples.length - 1) {
-                    loopCount++;
-                    showEndingScene();
-                    return;
-                }
+                // Show expanded result area with video
+                resultArea.classList.add('visible');
+                resultVideo.play();
 
-                nextSample();
-                setTimeout(startDemoAnimation, 500);
-            }, VIDEO_DISPLAY_TIME);
+                // After video display time, continue to next sample
+                scheduleTimeout(() => {
+                    if (isPaused) return;
+
+                    resultArea.classList.remove('visible');
+                    animationRunning = false;
+
+                    // Check if we've completed a full loop (last sample)
+                    if (currentSampleIndex === samples.length - 1) {
+                        loopCount++;
+                        showEndingScene();
+                        return;
+                    }
+
+                    nextSample();
+                    scheduleTimeout(startDemoAnimation, 500);
+                }, VIDEO_DISPLAY_TIME);
+            }, 500);
         }
 
         function simulateDragStart() {
@@ -1295,7 +1437,7 @@
                     requestAnimationFrame(animateDrag);
                 } else {
                     // Drop the file
-                    setTimeout(simulateDrop, 200);
+                    scheduleTimeout(simulateDrop, 200);
                 }
             }
 
@@ -1308,7 +1450,7 @@
             uploadZone.classList.add('hidden');
 
             // Go directly to processing (which shows the image)
-            setTimeout(startProcessing, 300);
+            scheduleTimeout(startProcessing, 300);
         }
 
         function startProcessing() {
@@ -1340,7 +1482,7 @@
 
                 if (progress >= 100) {
                     clearInterval(processingInterval);
-                    setTimeout(showResult, 500);
+                    scheduleTimeout(showResult, 500);
                 }
             }, 100);
         }
@@ -1357,12 +1499,12 @@
                 resultBadgeText.textContent = 'Animation Complete!';
             }
 
-            setTimeout(() => {
+            scheduleTimeout(() => {
                 resultArea.classList.add('visible');
                 resultVideo.play();
 
                 // After video display time, move to next sample and restart
-                setTimeout(() => {
+                scheduleTimeout(() => {
                     if (isPaused) return; // Don't continue if paused
 
                     resultArea.classList.remove('visible');
@@ -1377,7 +1519,7 @@
                     }
 
                     nextSample();
-                    setTimeout(startDemoAnimation, 500);
+                    scheduleTimeout(startDemoAnimation, 500);
                 }, VIDEO_DISPLAY_TIME);
             }, 300);
         }
@@ -1392,7 +1534,7 @@
 
             // When video ends, wait 4 more seconds then continue
             endingVideo.onended = () => {
-                setTimeout(() => {
+                scheduleTimeout(() => {
                     if (!isPaused) {
                         if (autoplay) {
                             // In autoplay mode, redirect to next demo (Slidemake)
@@ -1401,7 +1543,7 @@
                             // When visiting directly, hide ending and restart loop from first sample
                             endingScene.classList.remove('visible');
                             currentSampleIndex = 0;
-                            setTimeout(startDemoAnimation, 500);
+                            scheduleTimeout(startDemoAnimation, 500);
                         }
                     }
                 }, 4000); // 4 second hold after video ends
@@ -1479,8 +1621,10 @@
 
         // Restart button (hidden but functional)
         restartBtn.addEventListener('click', () => {
+            clearAllTimeouts();
             resetDemo();
-            setTimeout(startDemoAnimation, 500);
+            animationRunning = false;
+            scheduleTimeout(startDemoAnimation, 500);
         });
 
         // Auto-start demo after page load

@@ -335,10 +335,10 @@
                         </a>
                     </div>
                 `;
-                // If in autoplay sequence, skip to next demo after a delay
+                // If in autoplay sequence, skip to end after a delay
                 if (autoplay) {
                     setTimeout(() => {
-                        window.location.href = '../animake/?autoplay=1';
+                        window.location.href = '../?sequence=complete';
                     }, 5000);
                 }
             }
@@ -364,7 +364,8 @@
                 updatePlayPauseButton();
                 // If in autoplay sequence, redirect to next demo
                 if (autoplay) {
-                    window.location.href = '../animake/?autoplay=1';
+                    // Autoplay sequence complete, return to index
+                    window.location.href = '../?sequence=complete';
                 }
             }
         }

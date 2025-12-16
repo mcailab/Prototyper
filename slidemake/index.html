@@ -36,6 +36,16 @@
             --upload-bg: rgba(56, 189, 248, 0.05);
             --upload-hover-bg: rgba(56, 189, 248, 0.1);
             --processing-bar-bg: #e2e8f0;
+            /* Slide colors for light mode */
+            --slide-bg: #ffffff;
+            --slide-body-bg: #fafafa;
+            --slide-footer-bg: #f0f0f0;
+            --slide-item-bg: #ffffff;
+            --slide-text: #333333;
+            --slide-text-muted: #666666;
+            --bar-label-color: #666666;
+            --timeline-content-bg: #f8f9fa;
+            --metric-card-bg: #ffffff;
         }
 
         @media (prefers-color-scheme: dark) {
@@ -54,6 +64,16 @@
                 --upload-bg: rgba(56, 189, 248, 0.08);
                 --upload-hover-bg: rgba(56, 189, 248, 0.15);
                 --processing-bar-bg: #475569;
+                /* Slide colors for dark mode */
+                --slide-bg: #1e293b;
+                --slide-body-bg: #0f172a;
+                --slide-footer-bg: #1e293b;
+                --slide-item-bg: #334155;
+                --slide-text: #f1f5f9;
+                --slide-text-muted: #94a3b8;
+                --bar-label-color: #94a3b8;
+                --timeline-content-bg: #334155;
+                --metric-card-bg: #334155;
             }
         }
 
@@ -140,6 +160,70 @@
         .control-btn.active {
             background: var(--text-primary);
             color: var(--container-bg);
+        }
+        /* Tab Navigation */
+        .tab-navigation {
+            display: flex;
+            gap: 6px;
+        }
+        .tab-btn {
+            padding: 8px 12px;
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+        .tab-btn i {
+            font-size: 14px;
+        }
+        .tab-btn.active {
+            transform: translateY(-2px);
+        }
+        .tab-btn.prompt-active {
+            background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+            color: white;
+            border-color: #38bdf8;
+            box-shadow: 0 4px 12px -2px rgba(56, 189, 248, 0.4);
+        }
+        .tab-btn.translate-active {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            border-color: #ef4444;
+            box-shadow: 0 4px 12px -2px rgba(239, 68, 68, 0.4);
+        }
+        .tab-btn.animate-active {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            color: white;
+            border-color: #8b5cf6;
+            box-shadow: 0 4px 12px -2px rgba(139, 92, 246, 0.4);
+        }
+        .tab-btn:hover:not(.active) {
+            background: var(--border-color);
+            transform: translateY(-1px);
+        }
+        @media (max-width: 768px) {
+            .tab-navigation {
+                gap: 4px;
+            }
+            .tab-btn {
+                padding: 6px 10px;
+                font-size: 11px;
+            }
+            .tab-btn span {
+                display: none;
+            }
+            .tab-btn i {
+                font-size: 16px;
+                margin: 0;
+            }
         }
         .demo-area {
             flex: 1;
@@ -703,7 +787,7 @@
             width: 650px;
             max-width: 95vw;
             aspect-ratio: 16/9;
-            background: white;
+            background: var(--slide-bg);
             border-radius: 12px;
             box-shadow: 0 20px 60px var(--shadow-heavy);
             display: flex;
@@ -713,54 +797,58 @@
         }
         .slide-header {
             background: linear-gradient(135deg, var(--accent-gradient-start) 0%, var(--accent-gradient-end) 100%);
-            padding: 1.5rem 2rem;
+            padding: 1rem 1.5rem;
             color: white;
+            flex-shrink: 0;
         }
         .slide-header h2 {
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             font-weight: 700;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.25rem;
         }
         .slide-header p {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             opacity: 0.9;
         }
         .slide-body {
             flex: 1;
-            padding: 1.5rem 2rem;
+            padding: 1rem 1.5rem;
             display: flex;
             flex-direction: column;
-            gap: 1rem;
-            background: #fafafa;
+            gap: 0.75rem;
+            background: var(--slide-body-bg);
+            min-height: 0;
+            overflow: hidden;
         }
         .slide-item {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 0.75rem 1rem;
-            background: white;
+            gap: 10px;
+            padding: 0.6rem 0.85rem;
+            background: var(--slide-item-bg);
             border-radius: 8px;
             border-left: 4px solid var(--accent-color);
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
         .slide-item i {
             color: var(--accent-color);
-            font-size: 1.1rem;
-            width: 24px;
+            font-size: 1rem;
+            width: 22px;
             text-align: center;
         }
         .slide-item span {
-            font-size: 0.95rem;
-            color: #333;
+            font-size: 0.85rem;
+            color: var(--slide-text);
         }
         .slide-footer {
-            padding: 0.75rem 2rem;
-            background: #f0f0f0;
+            padding: 0.5rem 1.5rem;
+            background: var(--slide-footer-bg);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.8rem;
-            color: #666;
+            font-size: 0.75rem;
+            color: var(--slide-text-muted);
+            flex-shrink: 0;
         }
         .slide-page {
             display: flex;
@@ -914,7 +1002,7 @@
         .slide-viewer-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(0, 0, 0, 0);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -922,11 +1010,40 @@
             z-index: 1000;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.3s, visibility 0.3s;
+            transition: background 0.4s ease, opacity 0.3s, visibility 0.3s;
         }
         .slide-viewer-overlay.visible {
             opacity: 1;
             visibility: visible;
+            background: rgba(0, 0, 0, 0.9);
+        }
+        .slide-viewer-overlay.visible .slide-viewer-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+        /* Closing animation */
+        .slide-viewer-overlay.closing .slide-viewer-content {
+            transform: scale(0.3);
+            opacity: 0;
+            transition: transform 0.3s ease-in, opacity 0.2s ease;
+        }
+        .slide-viewer-overlay.closing {
+            background: rgba(0, 0, 0, 0);
+        }
+        /* Header and nav fade in */
+        .slide-viewer-header,
+        .slide-viewer-nav {
+            opacity: 0;
+            transition: opacity 0.3s ease 0.2s;
+        }
+        .slide-viewer-overlay.visible .slide-viewer-header,
+        .slide-viewer-overlay.visible .slide-viewer-nav {
+            opacity: 1;
+        }
+        .slide-viewer-overlay.closing .slide-viewer-header,
+        .slide-viewer-overlay.closing .slide-viewer-nav {
+            opacity: 0;
+            transition: opacity 0.15s ease;
         }
         .slide-viewer-header {
             position: absolute;
@@ -961,6 +1078,9 @@
             width: 90%;
             max-width: 900px;
             aspect-ratio: 16/9;
+            transform: scale(0.3);
+            opacity: 0;
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
         }
         .slide-viewer-content .slide-preview {
             width: 100%;
@@ -1022,11 +1142,45 @@
         /* Clickable slide in chat */
         .chat-bubble .slide-preview {
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s;
+            position: relative;
         }
         .chat-bubble .slide-preview:hover {
-            transform: scale(1.02);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+            transform: scale(1.03);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+        }
+        .slide-expand-hint {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            background: rgba(0, 0, 0, 0.7);
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            pointer-events: none;
+            color: white;
+            font-size: 1.4rem;
+        }
+        .chat-bubble .slide-preview:hover .slide-expand-hint,
+        .result-area .slide-preview:hover .slide-expand-hint {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+        /* Clickable result slide */
+        .result-area .slide-preview {
+            cursor: pointer;
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s;
+            position: relative;
+        }
+        .result-area .slide-preview:hover {
+            transform: scale(1.03);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.25);
         }
         .click-hint {
             display: flex;
@@ -1058,11 +1212,11 @@
             z-index: 1;
         }
         .slide-preview.layout-cover .slide-header h2 {
-            font-size: 2rem;
-            margin-bottom: 0.75rem;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
         }
         .slide-preview.layout-cover .slide-header p {
-            font-size: 1.1rem;
+            font-size: 0.9rem;
         }
         .slide-preview.layout-cover .slide-body {
             display: none;
@@ -1070,19 +1224,19 @@
         .slide-preview.layout-cover .cover-stats {
             display: flex;
             justify-content: center;
-            gap: 2rem;
-            margin-top: 1.5rem;
+            gap: 1.5rem;
+            margin-top: 1rem;
         }
         .slide-preview.layout-cover .cover-stat {
             text-align: center;
         }
         .slide-preview.layout-cover .cover-stat-value {
-            font-size: 2rem;
+            font-size: 1.5rem;
             font-weight: 700;
             display: block;
         }
         .slide-preview.layout-cover .cover-stat-label {
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             opacity: 0.9;
         }
         /* Animated particles background */
@@ -1120,45 +1274,46 @@
             flex-direction: row;
             align-items: flex-end;
             justify-content: space-around;
-            padding: 0.75rem 1.5rem 1rem;
-            gap: 0.75rem;
+            padding: 0.5rem 1rem 0.75rem;
+            gap: 0.5rem;
             flex: 1;
+            min-height: 0;
         }
         .bar-chart-item {
             display: flex;
             flex-direction: column;
             align-items: center;
             flex: 1;
-            max-width: 120px;
+            max-width: 100px;
         }
         .bar-wrapper {
             width: 100%;
-            height: 140px;
+            height: 100px;
             display: flex;
             align-items: flex-end;
             justify-content: center;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.4rem;
         }
         .bar {
-            width: 80%;
+            width: 75%;
             background: linear-gradient(180deg, var(--accent-gradient-start) 0%, var(--accent-gradient-end) 100%);
-            border-radius: 8px 8px 0 0;
+            border-radius: 6px 6px 0 0;
             position: relative;
             transition: height 0.3s ease;
         }
         .bar-value {
             position: absolute;
-            top: -28px;
+            top: -22px;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 0.9rem;
+            font-size: 0.75rem;
             font-weight: 700;
             color: var(--accent-color);
             white-space: nowrap;
         }
         .bar-label {
-            font-size: 0.85rem;
-            color: #666;
+            font-size: 0.7rem;
+            color: var(--bar-label-color);
             text-align: center;
             line-height: 1.2;
             font-weight: 500;
@@ -1186,39 +1341,41 @@
 
         /* Timeline Slide */
         .slide-preview.layout-timeline .slide-body {
-            padding: 1rem 1.5rem;
+            padding: 0.5rem 1rem;
             position: relative;
+            flex: 1;
+            min-height: 0;
         }
         .timeline-container {
             display: flex;
             flex-direction: column;
-            gap: 0.75rem;
+            gap: 0.5rem;
             position: relative;
-            padding-left: 2rem;
+            padding-left: 1.75rem;
         }
         .timeline-container::before {
             content: '';
             position: absolute;
-            left: 8px;
-            top: 10px;
-            bottom: 10px;
-            width: 3px;
+            left: 7px;
+            top: 8px;
+            bottom: 8px;
+            width: 2px;
             background: linear-gradient(180deg, var(--accent-gradient-start) 0%, var(--accent-gradient-end) 100%);
             border-radius: 2px;
         }
         .timeline-item {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0.75rem;
             position: relative;
         }
         .timeline-node {
             position: absolute;
-            left: -2rem;
-            width: 20px;
-            height: 20px;
-            background: white;
-            border: 3px solid var(--accent-color);
+            left: -1.75rem;
+            width: 16px;
+            height: 16px;
+            background: var(--slide-bg);
+            border: 2px solid var(--accent-color);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -1226,20 +1383,20 @@
             z-index: 1;
         }
         .timeline-node i {
-            font-size: 0.6rem;
+            font-size: 0.5rem;
             color: var(--accent-color);
         }
         .timeline-content {
             flex: 1;
-            padding: 0.6rem 1rem;
-            background: white;
-            border-radius: 8px;
+            padding: 0.4rem 0.75rem;
+            background: var(--timeline-content-bg);
+            border-radius: 6px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
             border-left: 3px solid var(--accent-color);
         }
         .timeline-content span {
-            font-size: 0.85rem;
-            color: #333;
+            font-size: 0.75rem;
+            color: var(--slide-text);
         }
         /* Animated timeline */
         .slide-preview.layout-timeline.animated .timeline-item {
@@ -1269,20 +1426,21 @@
         /* Pie Chart Slide */
         .slide-preview.layout-pie .slide-body {
             flex-direction: row;
-            padding: 0.75rem 1.5rem;
-            gap: 2rem;
+            padding: 0.5rem 1rem;
+            gap: 1rem;
             flex: 1;
             align-items: center;
+            min-height: 0;
         }
         .pie-chart-container {
-            flex: 0 0 180px;
+            flex: 0 0 120px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
         .pie-chart {
-            width: 160px;
-            height: 160px;
+            width: 110px;
+            height: 110px;
             border-radius: 50%;
             position: relative;
             background: conic-gradient(
@@ -1291,7 +1449,7 @@
                 #f472b6 216deg 288deg,
                 #34d399 288deg 360deg
             );
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
         }
         .pie-chart::before {
             content: '';
@@ -1299,40 +1457,40 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 60px;
-            height: 60px;
-            background: #fafafa;
+            width: 45px;
+            height: 45px;
+            background: var(--slide-body-bg);
             border-radius: 50%;
         }
         .pie-legend {
             flex: 1;
             display: flex;
             flex-direction: column;
-            gap: 0.6rem;
+            gap: 0.4rem;
             justify-content: center;
         }
         .pie-legend-item {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            padding: 0.6rem 1rem;
-            background: white;
-            border-radius: 8px;
+            gap: 0.5rem;
+            padding: 0.4rem 0.75rem;
+            background: var(--slide-item-bg);
+            border-radius: 6px;
             box-shadow: 0 2px 6px rgba(0,0,0,0.05);
         }
         .pie-legend-color {
-            width: 16px;
-            height: 16px;
-            border-radius: 4px;
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
             flex-shrink: 0;
         }
         .pie-legend-text {
-            font-size: 0.9rem;
-            color: #333;
+            font-size: 0.7rem;
+            color: var(--slide-text);
             flex: 1;
         }
         .pie-legend-value {
-            font-size: 1rem;
+            font-size: 0.8rem;
             font-weight: 700;
             color: var(--accent-color);
         }
@@ -1362,33 +1520,37 @@
         .slide-preview.layout-metrics .slide-body {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 0.75rem;
-            padding: 1rem 1.5rem;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            flex: 1;
+            min-height: 0;
         }
         .metric-card {
-            background: white;
-            border-radius: 12px;
-            padding: 1rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            background: var(--metric-card-bg);
+            border-radius: 8px;
+            padding: 0.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
             text-align: center;
             border-top: 3px solid var(--accent-color);
+            min-height: 0;
         }
         .metric-card:nth-child(1) { border-top-color: #38bdf8; }
         .metric-card:nth-child(2) { border-top-color: #818cf8; }
         .metric-card:nth-child(3) { border-top-color: #f472b6; }
         .metric-card:nth-child(4) { border-top-color: #34d399; }
         .metric-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 0.5rem;
-            font-size: 1rem;
+            margin-bottom: 0.3rem;
+            font-size: 0.85rem;
             color: white;
         }
         .metric-card:nth-child(1) .metric-icon { background: linear-gradient(135deg, #38bdf8, #0ea5e9); }
@@ -1396,15 +1558,15 @@
         .metric-card:nth-child(3) .metric-icon { background: linear-gradient(135deg, #f472b6, #ec4899); }
         .metric-card:nth-child(4) .metric-icon { background: linear-gradient(135deg, #34d399, #10b981); }
         .metric-value {
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             font-weight: 700;
-            color: #1e293b;
-            margin-bottom: 0.25rem;
+            color: var(--slide-text);
+            margin-bottom: 0.15rem;
         }
         .metric-label {
-            font-size: 0.75rem;
-            color: #64748b;
-            line-height: 1.3;
+            font-size: 0.65rem;
+            color: var(--slide-text-muted);
+            line-height: 1.2;
         }
         /* Animated metrics */
         .slide-preview.layout-metrics.animated .metric-card {
@@ -1527,6 +1689,20 @@
                 </div>
                 <span>Slidemake</span>
             </a>
+            <nav class="tab-navigation">
+                <button class="tab-btn active prompt-active" data-tab="prompt">
+                    <i class="fas fa-wand-magic-sparkles"></i>
+                    <span>Prompt</span>
+                </button>
+                <button class="tab-btn" data-tab="translate">
+                    <i class="fas fa-language"></i>
+                    <span>Translate</span>
+                </button>
+                <button class="tab-btn" data-tab="animate">
+                    <i class="fas fa-film"></i>
+                    <span>Animate</span>
+                </button>
+            </nav>
             <div class="control-panel">
                 <button id="homeBtn" class="control-btn" title="Home">
                     <i class="fas fa-home"></i>
@@ -1541,23 +1717,23 @@
         </header>
 
         <div class="demo-area">
-            <!-- Upload Zone (for deck translation) -->
-            <div class="upload-zone" id="uploadZone">
+            <!-- Upload Zone (for slide translation and animation - hidden by default) -->
+            <div class="upload-zone hidden" id="uploadZone">
                 <div class="upload-header">
                     <i class="fas fa-language upload-header-icon" id="uploadHeaderIcon"></i>
-                    <p class="upload-title" id="uploadTitle">Deck Translation</p>
+                    <p class="upload-title" id="uploadTitle">Slide Translation</p>
                 </div>
                 <div class="upload-dropzone">
                     <i class="fas fa-cloud-arrow-up upload-icon"></i>
-                    <p class="upload-text" id="uploadText">Drag & drop your English deck here</p>
+                    <p class="upload-text" id="uploadText">Drag & drop your English slides here</p>
                 </div>
             </div>
 
-            <!-- Prompt Zone (for prompt to deck) -->
+            <!-- Prompt Zone (for prompt to slide) -->
             <div class="prompt-zone" id="promptZone">
                 <div class="prompt-header">
                     <i class="fas fa-person-chalkboard prompt-icon"></i>
-                    <p class="prompt-title" id="promptZoneTitle">Prompt to Deck</p>
+                    <p class="prompt-title" id="promptZoneTitle">Prompt to Slide</p>
                 </div>
                 <div class="prompt-input-container">
                     <textarea class="prompt-input" id="promptInput" placeholder="Describe the presentation you want to create..." readonly></textarea>
@@ -1609,6 +1785,7 @@
             <!-- Result Area -->
             <div class="result-area" id="resultArea">
                 <div class="slide-preview chinese" id="resultSlide">
+                    <div class="slide-expand-hint"><i class="fas fa-expand"></i></div>
                     <div class="slide-header">
                         <h2>第三季度銷售報告</h2>
                         <p>季度業績概覽</p>
@@ -1626,7 +1803,7 @@
                 </div>
                 <div class="result-badge" id="resultBadge">
                     <i class="fas fa-check"></i>
-                    <span id="resultBadgeText">Deck Complete!</span>
+                    <span id="resultBadgeText">Slide Complete!</span>
                 </div>
             </div>
 
@@ -1654,7 +1831,7 @@
         <!-- Slide Viewer Overlay -->
         <div class="slide-viewer-overlay" id="slideViewerOverlay">
             <div class="slide-viewer-header">
-                <span class="slide-viewer-title" id="slideViewerTitle">AI Startup Pitch Deck</span>
+                <span class="slide-viewer-title" id="slideViewerTitle">Full Auto Driving 2026</span>
                 <button class="slide-viewer-close" id="slideViewerClose">
                     <i class="fas fa-times"></i>
                 </button>
@@ -1716,6 +1893,57 @@
         homeBtn.addEventListener('click', () => {
             window.location.href = '../';
         });
+
+        // Tab navigation - jump to specific demo type
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tabName = btn.dataset.tab;
+                jumpToDemo(tabName);
+            });
+        });
+
+        function jumpToDemo(tabName) {
+            // Clear all pending timeouts from previous animations
+            clearAllTimeouts();
+
+            // Reset current demo
+            resetDemo();
+            animationRunning = false;
+            isPaused = false;
+            updatePlayPauseButton();
+
+            // Find the sample index for the tab
+            let targetIndex = 0;
+            if (tabName === 'prompt') targetIndex = 0;
+            else if (tabName === 'translate') targetIndex = 1;
+            else if (tabName === 'animate') targetIndex = 2;
+
+            currentSampleIndex = targetIndex;
+            updateTabUI(tabName);
+
+            // Start the demo for this tab
+            scheduleTimeout(startDemoAnimation, 300);
+        }
+
+        function updateTabUI(tabName) {
+            tabBtns.forEach(btn => {
+                btn.classList.remove('active', 'prompt-active', 'translate-active', 'animate-active');
+            });
+            const activeBtn = document.querySelector(`.tab-btn[data-tab="${tabName}"]`);
+            if (activeBtn) {
+                activeBtn.classList.add('active', `${tabName}-active`);
+            }
+        }
+
+        // Update tab UI when sample changes during auto-play
+        function updateTabFromSample() {
+            const sample = getCurrentSample();
+            let tabName = 'prompt';
+            if (sample.type === 'upload') tabName = 'translate';
+            else if (sample.type === 'animate') tabName = 'animate';
+            updateTabUI(tabName);
+        }
 
         // Demo samples - three types with slide content
         // All use consistent "Full Auto Driving Market 2026" research theme with 5 slides
@@ -1838,17 +2066,39 @@
             ]
         };
 
-        // Only show prompt-to-deck flow (removed translation and animate for cleaner demo)
+        // All three demo flows: prompt, translation, animate
         const samples = [
             {
                 type: 'prompt',
-                title: 'Prompt to Deck',
+                title: 'Prompt to Slide',
                 prompt: "Create a market research presentation on Full Autonomous Driving market outlook for 2026",
                 resultText: "Here's your market research on Full Auto Driving 2026:",
                 badge: 'Research Complete!',
                 slideClass: '',
                 slideContent: deckTheme.slides[0],
                 allSlides: deckTheme.slides
+            },
+            {
+                type: 'upload',
+                title: 'Slide Translation',
+                fileName: 'Full_Auto_Driving_2026.pptx',
+                inputSlide: deckTheme.slides[0],
+                resultSlide: deckTheme.slidesChinese[0],
+                resultText: "Translation complete! Your slides are now in Chinese:",
+                badge: 'Translation Complete!',
+                allInputSlides: deckTheme.slides,
+                allResultSlides: deckTheme.slidesChinese
+            },
+            {
+                type: 'animate',
+                title: 'Animate Slide',
+                fileName: 'Full_Auto_Driving_2026.pptx',
+                inputSlide: deckTheme.slides[0],
+                resultSlide: deckTheme.slides[0],
+                resultText: "Animation complete! Your slides now have dynamic effects:",
+                badge: 'Animation Complete!',
+                allInputSlides: deckTheme.slides,
+                allResultSlides: deckTheme.slides
             }
         ];
 
@@ -1860,12 +2110,12 @@
 
         // Status messages for different operations
         const translationStatusMessages = [
-            'Analyzing deck structure...',
+            'Analyzing slide structure...',
             'Extracting text content...',
             'Translating to Chinese...',
             'Preserving formatting...',
             'Applying translations...',
-            'Finalizing deck...'
+            'Finalizing slides...'
         ];
 
         const promptStatusMessages = [
@@ -1883,12 +2133,30 @@
             'Creating animations...',
             'Adding motion effects...',
             'Syncing transitions...',
-            'Rendering animated deck...'
+            'Rendering animated slides...'
         ];
 
         let currentStatusMessages = promptStatusMessages;
         let animationRunning = false;
         let currentPhase = 'idle';
+        let pendingTimeouts = []; // Track all pending timeouts
+
+        // Wrapper for setTimeout that tracks timeouts
+        function scheduleTimeout(callback, delay) {
+            const id = setTimeout(() => {
+                // Remove from tracking array when executed
+                pendingTimeouts = pendingTimeouts.filter(t => t !== id);
+                callback();
+            }, delay);
+            pendingTimeouts.push(id);
+            return id;
+        }
+
+        // Clear all pending timeouts
+        function clearAllTimeouts() {
+            pendingTimeouts.forEach(id => clearTimeout(id));
+            pendingTimeouts = [];
+        }
 
         // Slide elements
         const processingSlide = document.getElementById('processingSlide');
@@ -1999,7 +2267,11 @@
                     }
             }
 
+            // Add expand hint only for result slide (has id="resultSlide")
+            const expandHint = slideElement.id === 'resultSlide' ? '<div class="slide-expand-hint"><i class="fas fa-expand"></i></div>' : '';
+
             slideElement.innerHTML = `
+                ${expandHint}
                 <div class="slide-header">
                     <h2>${content.title}</h2>
                     <p>${content.subtitle}</p>
@@ -2112,15 +2384,18 @@
             animationRunning = true;
             resetDemo();
 
+            // Update tab UI to match current sample
+            updateTabFromSample();
+
             const sample = getCurrentSample();
 
             if (sample.type === 'upload') {
-                // Deck translation flow (drag & drop)
+                // Slide translation flow (drag & drop)
                 currentStatusMessages = translationStatusMessages;
-                processingLabel.textContent = 'Translating deck...';
+                processingLabel.textContent = 'Translating slides...';
                 uploadHeaderIcon.className = 'fas fa-language upload-header-icon';
-                uploadTitle.textContent = 'Deck Translation';
-                uploadText.textContent = 'Drag & drop your English deck here';
+                uploadTitle.textContent = 'Slide Translation';
+                uploadText.textContent = 'Drag & drop your English slides here';
                 uploadZone.classList.remove('hidden');
 
                 // Setup slides for translation flow
@@ -2129,14 +2404,14 @@
                 renderSlide(processingSlide, sample.inputSlide, '');
                 renderSlide(resultSlide, sample.resultSlide, 'chinese');
 
-                setTimeout(simulateDragStart, 1000);
+                scheduleTimeout(simulateDragStart, 1000);
             } else if (sample.type === 'animate') {
-                // Animate deck flow (drag & drop existing deck)
+                // Animate slide flow (drag & drop existing slides)
                 currentStatusMessages = animatedStatusMessages;
                 processingLabel.textContent = 'Adding animations...';
                 uploadHeaderIcon.className = 'fas fa-wand-magic-sparkles upload-header-icon';
-                uploadTitle.textContent = 'Animate Deck';
-                uploadText.textContent = 'Drag & drop your deck to animate';
+                uploadTitle.textContent = 'Animate Slide';
+                uploadText.textContent = 'Drag & drop your slides to animate';
                 uploadZone.classList.remove('hidden');
 
                 // Setup slides for animate flow
@@ -2145,16 +2420,16 @@
                 renderSlide(processingSlide, sample.inputSlide, '');
                 renderSlide(resultSlide, sample.resultSlide, 'animated');
 
-                setTimeout(simulateDragStart, 1000);
+                scheduleTimeout(simulateDragStart, 1000);
             } else {
                 // Prompt-based flow
                 currentStatusMessages = promptStatusMessages;
-                promptZoneTitle.textContent = 'Prompt to Deck';
+                promptZoneTitle.textContent = 'Prompt to Slide';
 
                 // Setup result slide for prompt flow
                 renderSlide(resultSlide, sample.slideContent, '');
 
-                setTimeout(showPromptZone, 500);
+                scheduleTimeout(showPromptZone, 500);
             }
         }
 
@@ -2162,7 +2437,7 @@
         function showPromptZone() {
             currentPhase = 'prompt';
             promptZone.classList.add('visible');
-            setTimeout(startTypingAnimation, 800);
+            scheduleTimeout(startTypingAnimation, 800);
         }
 
         function startTypingAnimation() {
@@ -2183,9 +2458,9 @@
                     clearInterval(typingInterval);
                     promptInput.classList.remove('typing');
 
-                    setTimeout(() => {
+                    scheduleTimeout(() => {
                         generateBtn.classList.add('ready');
-                        setTimeout(clickGenerateButton, 800);
+                        scheduleTimeout(clickGenerateButton, 800);
                     }, 300);
                 }
             }, 50);
@@ -2194,10 +2469,10 @@
         function clickGenerateButton() {
             generateBtn.classList.add('clicked');
 
-            setTimeout(() => {
+            scheduleTimeout(() => {
                 generateBtn.classList.remove('clicked');
                 promptZone.classList.remove('visible');
-                setTimeout(startChatFlow, 300);
+                scheduleTimeout(startChatFlow, 300);
             }, 200);
         }
 
@@ -2209,7 +2484,7 @@
             const sample = getCurrentSample();
             addChatBubble('user', sample.prompt);
 
-            setTimeout(() => {
+            scheduleTimeout(() => {
                 addAIThinkingBubble();
                 startChatProcessing();
             }, 800);
@@ -2270,7 +2545,7 @@
                     `;
                 } else {
                     clearInterval(processingInterval);
-                    setTimeout(showChatResult, 500);
+                    scheduleTimeout(showChatResult, 500);
                 }
             }, 800);
         }
@@ -2385,6 +2660,7 @@
                         <span>Slidemake AI</span>
                         <div class="slide-page"><i class="fas fa-clone"></i> 1 / 5</div>
                     </div>
+                    <div class="slide-expand-hint"><i class="fas fa-expand"></i></div>
                 </div>
                 <div class="click-hint">
                     <i class="fas fa-mouse-pointer"></i>
@@ -2420,7 +2696,7 @@
             }
 
             // Auto-click after a short delay to show the slide viewer
-            setTimeout(() => {
+            scheduleTimeout(() => {
                 if (isPaused) return;
                 openSlideViewer(allSlides, 0, slideClass);
             }, 1500);
@@ -2462,7 +2738,7 @@
                 if (progress < 1) {
                     requestAnimationFrame(animateDrag);
                 } else {
-                    setTimeout(simulateDrop, 200);
+                    scheduleTimeout(simulateDrop, 200);
                 }
             }
 
@@ -2474,7 +2750,7 @@
             uploadZone.classList.remove('drag-over');
             uploadZone.classList.add('hidden');
 
-            setTimeout(startProcessing, 300);
+            scheduleTimeout(startProcessing, 300);
         }
 
         function startProcessing() {
@@ -2503,7 +2779,7 @@
 
                 if (progress >= 100) {
                     clearInterval(processingInterval);
-                    setTimeout(showResult, 500);
+                    scheduleTimeout(showResult, 500);
                 }
             }, 100);
         }
@@ -2515,11 +2791,11 @@
             const sample = getCurrentSample();
             resultBadgeText.textContent = sample.badge;
 
-            setTimeout(() => {
+            scheduleTimeout(() => {
                 resultArea.classList.add('visible');
 
                 // After showing result briefly, open slide viewer
-                setTimeout(() => {
+                scheduleTimeout(() => {
                     if (isPaused) return;
                     resultArea.classList.remove('visible');
 
@@ -2540,16 +2816,16 @@
 
             // When video ends, wait 4 more seconds then continue
             endingVideo.onended = () => {
-                setTimeout(() => {
+                scheduleTimeout(() => {
                     if (!isPaused) {
                         if (autoplay) {
-                            // In autoplay mode, sequence complete
-                            window.location.href = '../?sequence=complete';
+                            // In autoplay mode, go to next demo (Recap)
+                            window.location.href = '../recap/?autoplay=1';
                         } else {
                             // When visiting directly, hide ending and restart loop from first sample
                             endingScene.classList.remove('visible');
                             currentSampleIndex = 0;
-                            setTimeout(startDemoAnimation, 500);
+                            scheduleTimeout(startDemoAnimation, 500);
                         }
                     }
                 }, 4000); // 4 second hold after video ends
@@ -2664,25 +2940,31 @@
         }
 
         function closeSlideViewer() {
-            slideViewerOverlay.classList.remove('visible');
+            // Add closing animation class
+            slideViewerOverlay.classList.add('closing');
             stopAutoAdvance();
 
-            // Continue the demo - move to next sample or ending
-            setTimeout(() => {
-                chatContainer.classList.remove('visible');
-                animationRunning = false;
-                isPaused = false;
-                updatePlayPauseButton();
+            // Wait for closing animation to complete
+            scheduleTimeout(() => {
+                slideViewerOverlay.classList.remove('visible', 'closing');
 
-                if (currentSampleIndex === samples.length - 1) {
-                    loopCount++;
-                    showEndingScene();
-                    return;
-                }
+                // Continue the demo - move to next sample or ending
+                scheduleTimeout(() => {
+                    chatContainer.classList.remove('visible');
+                    animationRunning = false;
+                    isPaused = false;
+                    updatePlayPauseButton();
 
-                nextSample();
-                setTimeout(startDemoAnimation, 500);
-            }, 300);
+                    if (currentSampleIndex === samples.length - 1) {
+                        loopCount++;
+                        showEndingScene();
+                        return;
+                    }
+
+                    nextSample();
+                    scheduleTimeout(startDemoAnimation, 500);
+                }, 100);
+            }, 350);
         }
 
         function renderViewerSlide() {
@@ -2926,6 +3208,15 @@
         slideViewerOverlay.addEventListener('click', (e) => {
             if (e.target === slideViewerOverlay) {
                 closeSlideViewer();
+            }
+        });
+
+        // Result slide click to open viewer
+        resultSlide.addEventListener('click', () => {
+            const sample = getCurrentSample();
+            if (sample && sample.allResultSlides) {
+                const slideClass = sample.type === 'animate' ? 'animated' : 'chinese';
+                openSlideViewer(sample.allResultSlides, 0, slideClass);
             }
         });
     </script>

@@ -1173,9 +1173,9 @@ function showROIDashboard() {
                     // Hide conclusion
                     conclusionOverlay.classList.remove('show');
 
-                    // If in autoplay sequence from index page, redirect to next demo (Recap)
+                    // If in autoplay sequence from index page, redirect to next demo (Animake)
                     if (autoplaySequence) {
-                        window.location.href = '../recap/?autoplay=1';
+                        window.location.href = '../animake/?autoplay=1';
                         return;
                     }
 
