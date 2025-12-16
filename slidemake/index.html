@@ -1120,46 +1120,48 @@
             flex-direction: row;
             align-items: flex-end;
             justify-content: space-around;
-            padding: 1rem 2rem 1.5rem;
-            gap: 0.5rem;
+            padding: 0.75rem 1.5rem 1rem;
+            gap: 0.75rem;
+            flex: 1;
         }
         .bar-chart-item {
             display: flex;
             flex-direction: column;
             align-items: center;
             flex: 1;
-            max-width: 80px;
+            max-width: 120px;
         }
         .bar-wrapper {
             width: 100%;
-            height: 120px;
+            height: 140px;
             display: flex;
             align-items: flex-end;
             justify-content: center;
             margin-bottom: 0.5rem;
         }
         .bar {
-            width: 70%;
+            width: 80%;
             background: linear-gradient(180deg, var(--accent-gradient-start) 0%, var(--accent-gradient-end) 100%);
-            border-radius: 6px 6px 0 0;
+            border-radius: 8px 8px 0 0;
             position: relative;
             transition: height 0.3s ease;
         }
         .bar-value {
             position: absolute;
-            top: -24px;
+            top: -28px;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 0.75rem;
+            font-size: 0.9rem;
             font-weight: 700;
             color: var(--accent-color);
             white-space: nowrap;
         }
         .bar-label {
-            font-size: 0.7rem;
+            font-size: 0.85rem;
             color: #666;
             text-align: center;
             line-height: 1.2;
+            font-weight: 500;
         }
         /* Animated bar growth */
         .slide-preview.layout-bar.animated .bar {
@@ -1267,18 +1269,20 @@
         /* Pie Chart Slide */
         .slide-preview.layout-pie .slide-body {
             flex-direction: row;
-            padding: 1rem 1.5rem;
-            gap: 1.5rem;
+            padding: 0.75rem 1.5rem;
+            gap: 2rem;
+            flex: 1;
+            align-items: center;
         }
         .pie-chart-container {
-            flex: 0 0 140px;
+            flex: 0 0 180px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
         .pie-chart {
-            width: 130px;
-            height: 130px;
+            width: 160px;
+            height: 160px;
             border-radius: 50%;
             position: relative;
             background: conic-gradient(
@@ -1295,8 +1299,8 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             background: #fafafa;
             border-radius: 50%;
         }
@@ -1304,31 +1308,31 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
+            gap: 0.6rem;
             justify-content: center;
         }
         .pie-legend-item {
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            padding: 0.5rem 0.75rem;
+            padding: 0.6rem 1rem;
             background: white;
             border-radius: 8px;
             box-shadow: 0 2px 6px rgba(0,0,0,0.05);
         }
         .pie-legend-color {
-            width: 14px;
-            height: 14px;
+            width: 16px;
+            height: 16px;
             border-radius: 4px;
             flex-shrink: 0;
         }
         .pie-legend-text {
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             color: #333;
             flex: 1;
         }
         .pie-legend-value {
-            font-size: 0.85rem;
+            font-size: 1rem;
             font-weight: 700;
             color: var(--accent-color);
         }
@@ -1451,6 +1455,53 @@
         .slide-preview.layout-metrics.chinese .metric-card:nth-child(2) .metric-icon { background: linear-gradient(135deg, #f97316, #ea580c); }
         .slide-preview.layout-metrics.chinese .metric-card:nth-child(3) .metric-icon { background: linear-gradient(135deg, #fbbf24, #f59e0b); }
         .slide-preview.layout-metrics.chinese .metric-card:nth-child(4) .metric-icon { background: linear-gradient(135deg, #84cc16, #65a30d); }
+
+        /* Dark mode improvements for slide content */
+        @media (prefers-color-scheme: dark) {
+            .slide-preview {
+                background: #1e293b;
+            }
+            .slide-body {
+                background: #0f172a;
+            }
+            .slide-footer {
+                background: #1e293b;
+                color: #94a3b8;
+            }
+            .bar-label {
+                color: #cbd5e1;
+            }
+            .timeline-content {
+                background: #1e293b;
+            }
+            .timeline-content span {
+                color: #e2e8f0;
+            }
+            .pie-chart::before {
+                background: #0f172a;
+            }
+            .pie-legend-item {
+                background: #1e293b;
+            }
+            .pie-legend-text {
+                color: #e2e8f0;
+            }
+            .metric-card {
+                background: #1e293b;
+            }
+            .metric-value {
+                color: #f1f5f9;
+            }
+            .metric-label {
+                color: #94a3b8;
+            }
+            .slide-item {
+                background: #1e293b;
+            }
+            .slide-item span {
+                color: #e2e8f0;
+            }
+        }
 
         @media (max-width: 768px) {
             .slide-viewer-content {
@@ -1787,6 +1838,7 @@
             ]
         };
 
+        // Only show prompt-to-deck flow (removed translation and animate for cleaner demo)
         const samples = [
             {
                 type: 'prompt',
@@ -1797,26 +1849,6 @@
                 slideClass: '',
                 slideContent: deckTheme.slides[0],
                 allSlides: deckTheme.slides
-            },
-            {
-                type: 'upload',
-                title: 'Deck Translation',
-                fileName: 'auto-driving-2026-en.pptx',
-                badge: 'Translation Complete!',
-                inputSlide: deckTheme.slides[0],
-                resultSlide: deckTheme.slidesChinese[0],
-                allInputSlides: deckTheme.slides,
-                allResultSlides: deckTheme.slidesChinese
-            },
-            {
-                type: 'animate',
-                title: 'Animate Deck',
-                fileName: 'auto-driving-2026.pptx',
-                badge: 'Animation Complete!',
-                inputSlide: deckTheme.slides[0],
-                resultSlide: deckTheme.slides[0],
-                allInputSlides: deckTheme.slides,
-                allResultSlides: deckTheme.slides
             }
         ];
 
