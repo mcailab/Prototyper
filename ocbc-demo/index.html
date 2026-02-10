@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OCBC CONNECT2OCBC Corporate Demo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="app-header">
+            <div class="logo">
+                <div class="logo-icon"><i class="fas fa-university"></i></div>
+                <span>OCBC CONNECT2OCBC Corporate Demo</span>
+            </div>
+            <div class="control-panel">
+                <button id="playPauseBtn" class="control-btn active">
+                    <i class="fas fa-pause"></i> <span>Pause</span>
+                </button>
+            </div>
+        </header>
+
+        <div class="dashboard-layout">
+            <div class="sidebar">
+                <div class="sidebar-title">Navigation</div>
+                <div class="sidebar-menu">
+                    <div class="menu-item active" data-tab="balance">
+                        <i class="fas fa-wallet"></i> Account Balance
+                    </div>
+                    <div class="menu-item" data-tab="listing">
+                        <i class="fas fa-list"></i> Account Listing
+                    </div>
+                    <div class="menu-item" data-tab="history">
+                        <i class="fas fa-history"></i> Transaction History
+                    </div>
+                </div>
+                <div class="api-status">
+                    <div class="status-dot"></div> API Connected
+                </div>
+            </div>
+
+            <div class="main-content">
+                <div id="view-balance" class="view-section active">
+                    <h2 class="section-title">Account Balance Query</h2>
+                    <div class="api-link">
+                        <a href="https://api.ocbc.com/store/ocbc/apis/documentation?title=Account%20Balance&name=Transactional_AccountBalance&type=Transactional" target="_blank" rel="noopener noreferrer">📖 API Docs</a>
+                    </div>
+                    <div class="input-group">
+                        <label>Account Number</label>
+                        <input type="text" id="accInput" value="201770161001" readonly>
+                    </div>
+                    <button class="action-btn" id="btnBalance">Query Balance 💰</button>
+                    
+                    <div class="result-area" id="resBalance">
+                        </div>
+                </div>
+
+                <div id="view-listing" class="view-section">
+                    <h2 class="section-title">Corporate Account Listing</h2>
+                    <p class="desc-text">Retrieve all linked corporate accounts.</p>
+                    <div class="api-link">
+                        <a href="https://api.ocbc.com/store/ocbc/apis/documentation?title=Corporate%20Account%20Listing&name=Transactional_AccountListing&type=Transactional" target="_blank" rel="noopener noreferrer">📖 API Docs</a>
+                    </div>
+                    <button class="action-btn" id="btnListing">Get Account List 📋</button>
+                    
+                    <div class="result-area" id="resListing"></div>
+                </div>
+
+                <div id="view-history" class="view-section">
+                    <h2 class="section-title">Transaction History</h2>
+                    <div class="api-link">
+                        <a href="https://api.ocbc.com/store/ocbc/apis/overview?title=Corporate%20Transaction%20History&name=Transactional_TransactionHistory&type=Transactional" target="_blank" rel="noopener noreferrer">📖 API Docs</a>
+                    </div>
+                    <div class="input-group">
+                        <label>Select Account</label>
+                        <div class="fake-select" id="historySelect">Select an account...</div>
+                    </div>
+                    <div class="date-row">
+                        <div class="input-group">
+                            <label>From Date</label>
+                            <div class="fake-input">2026-01-10</div>
+                        </div>
+                        <div class="input-group">
+                            <label>To Date</label>
+                            <div class="fake-input">2026-02-10</div>
+                        </div>
+                    </div>
+                    <button class="action-btn" id="btnHistory">Query History 📜</button>
+                    
+                    <div class="result-area" id="resHistory"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cursor" id="cursor"></div>
+
+        <div class="intro-overlay" id="introOverlay">
+            <div class="intro-content">
+                <i class="fas fa-network-wired intro-icon"></i>
+                <h1 class="intro-title">OCBC CONNECT2OCBC Corporate Demo</h1>
+                <p class="intro-subtitle">Seamless Corporate Banking Integration</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
